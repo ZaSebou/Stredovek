@@ -43,6 +43,7 @@
 | Tabulkový crafting a upgrady | **Deterministic Crafting / Recipe System** | Výroba a vylepšování je fixní (mám X a Y = dostanu Z), bez miniher o náhodnou kvalitu. |
 | Rozhodnutí před/po boji, boj sám je jen výpočet | **Auto-resolve Combat / Pre-battle Tactical Phase** | Bitevní systém, který vezme staty obou stran, vteřinu počítá a vyplivne report. Volby probíhají před výpočtem. |
 | Lokální a Globální roviny herní mapy a příběhů | **Scope-bound Narrative / Macro vs. Micro UI Planes** | Události a tlačítka se mění podle toho, zda zrovna koukáš na detail "Mého pozemku" (Lokální), nebo na "Mapu říše" (Globální). |
+| Organický výběr povolání | **ArchetypeComponent / StoryState Initialization** | Startovní fáze hry, kde UI dynamicky nabízí možnosti interakce. Výběr přepíše base staty entity, nahodí startovní předměty a uloží stav `chosen = true`. |
 | Události psané i generované | **Hybrid Event Architecture** | Systém čerpající jak z ručně psané databáze textů, tak z generovaných situací. |
 | Okno pro příběh a okno pro čísla | **Split-pane Layout** | UI rozdělené na narativní panel a taktický panel. |
 | Výsuvné panely | **Collapsible Sidebars / Non-modal UI** | Rozhraní nevytrhávající z kontextu pop-up oknem. |

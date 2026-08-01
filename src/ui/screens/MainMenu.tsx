@@ -3,10 +3,11 @@ import { hasActiveSave } from '../../storage/db';
 import { Crown, Play, Save, Settings } from 'lucide-react';
 
 interface MainMenuProps {
-  onStartGame: () => void;
+  onStartNewGame: () => void;
+  onContinueGame: () => void;
 }
 
-export const MainMenu: React.FC<MainMenuProps> = ({ onStartGame }) => {
+export const MainMenu: React.FC<MainMenuProps> = ({ onStartNewGame, onContinueGame }) => {
   const [hasSave, setHasSave] = useState(false);
 
   useEffect(() => {
@@ -28,7 +29,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ onStartGame }) => {
         <div className="w-full flex flex-col gap-4 px-8">
           {hasSave && (
             <button 
-              onClick={onStartGame}
+              onClick={onContinueGame}
               className="w-full flex items-center justify-center gap-3 bg-[var(--color-wood-600)] hover:bg-[var(--color-wood-500)] text-white py-4 px-6 rounded border border-[var(--color-wood-400)] transition-all transform hover:scale-105 shadow-lg"
             >
               <Save size={20} />
@@ -37,7 +38,10 @@ export const MainMenu: React.FC<MainMenuProps> = ({ onStartGame }) => {
           )}
 
           <button 
-            onClick={onStartGame}
+            onClick={() => {
+              if (hasSave && !window.confirm("Opravdu chceš přemazat stávající rozehranou hru?")) return;
+              onStartNewGame();
+            }}
             className={`w-full flex items-center justify-center gap-3 py-4 px-6 rounded border transition-all ${!hasSave ? 'bg-[var(--color-wood-600)] hover:bg-[var(--color-wood-500)] text-white border-[var(--color-wood-400)] shadow-lg hover:scale-105' : 'bg-transparent hover:bg-[var(--surface-color)] text-[var(--text-secondary)] border-[var(--border-color)]'}`}
           >
             <Play size={20} />
@@ -46,7 +50,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ onStartGame }) => {
 
           <button className="w-full flex items-center justify-center gap-3 bg-transparent hover:bg-[var(--surface-color)] text-[var(--text-secondary)] py-4 px-6 rounded border border-[var(--border-color)] transition-colors">
             <Settings size={20} />
-            Nastavení (Verze 0.2.0)
+            Nastavení (Verze 0.4.0)
           </button>
         </div>
         

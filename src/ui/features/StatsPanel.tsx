@@ -36,13 +36,35 @@ export const StatsPanel: React.FC = () => {
           <div className="space-y-4">
             <h3 className="text-xl text-[var(--text-primary)] mb-4">{nameComp ? nameComp.name : 'Neznámý'}</h3>
             
-            <div className="flex justify-between border-b border-[var(--border-color)] pb-2">
-              <span className="text-[var(--text-secondary)]">Zdraví (HP)</span>
-              <span className="font-medium text-green-400">{statsComp?.hp ?? 0} / {statsComp?.maxHp ?? 0}</span>
-            </div>
-            <div className="flex justify-between border-b border-[var(--border-color)] pb-2">
-              <span className="text-[var(--text-secondary)]">Energie (Stamina)</span>
-              <span className="font-medium text-yellow-400">{statsComp?.energy ?? 0} / {statsComp?.maxEnergy ?? 0}</span>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-4 text-sm">
+              <div className="flex justify-between border-b border-[var(--border-color)] pb-1">
+                <span className="text-[var(--text-secondary)]">Síla (Útok)</span>
+                <span className="font-medium text-red-400">{statsComp?.attack ?? 0}</span>
+              </div>
+              <div className="flex justify-between border-b border-[var(--border-color)] pb-1">
+                <span className="text-[var(--text-secondary)]">Obrana</span>
+                <span className="font-medium text-gray-400">{statsComp?.defense ?? 0}</span>
+              </div>
+              <div className="flex justify-between border-b border-[var(--border-color)] pb-1">
+                <span className="text-[var(--text-secondary)]">Intelekt</span>
+                <span className="font-medium text-blue-400">{statsComp?.intellect ?? 0}</span>
+              </div>
+              <div className="flex justify-between border-b border-[var(--border-color)] pb-1">
+                <span className="text-[var(--text-secondary)]">Obratnost</span>
+                <span className="font-medium text-green-300">{statsComp?.agility ?? 0}</span>
+              </div>
+              <div className="flex justify-between border-b border-[var(--border-color)] pb-1 col-span-2 mt-2">
+                <span className="text-[var(--text-secondary)]">Mana</span>
+                <span className="font-medium text-purple-400">{statsComp?.mana ?? 0} / {statsComp?.maxMana ?? 0}</span>
+              </div>
+              <div className="flex justify-between border-b border-[var(--border-color)] pb-1 col-span-2 mt-2">
+                <span className="text-[var(--text-secondary)]">Zdraví (HP)</span>
+                <span className="font-medium text-green-400">{statsComp?.hp ?? 0} / {statsComp?.maxHp ?? 0}</span>
+              </div>
+              <div className="flex justify-between border-b border-[var(--border-color)] pb-1 col-span-2 mt-2">
+                <span className="text-[var(--text-secondary)]">Energie (Stamina)</span>
+                <span className="font-medium text-yellow-400">{statsComp?.energy ?? 0} / {statsComp?.maxEnergy ?? 0}</span>
+              </div>
             </div>
             
             <div className="mt-6">

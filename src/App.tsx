@@ -46,7 +46,10 @@ function App() {
   }
 
   if (screen === 'menu') {
-    return <MainMenu onStartGame={handleStartGame} />;
+    return <MainMenu 
+      onStartNewGame={handleStartGame} 
+      onContinueGame={() => setScreen('game')} 
+    />;
   }
 
   return (

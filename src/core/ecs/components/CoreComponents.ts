@@ -11,6 +11,13 @@ export class PlayerComponent extends Component {
   type = 'PlayerComponent';
 }
 
+export class ArchetypeComponent extends Component {
+  type = 'ArchetypeComponent';
+  constructor(public chosen: boolean = false, public archetypeId: string | null = null) {
+    super();
+  }
+}
+
 export class ResourceComponent extends Component {
   type = 'ResourceComponent';
   constructor(
@@ -46,7 +53,11 @@ export class StatsComponent extends Component {
     public energy: number = 50,
     public maxEnergy: number = 50,
     public attack: number = 5,
-    public mana: number = 2
+    public defense: number = 0,
+    public intellect: number = 1,
+    public mana: number = 0,
+    public maxMana: number = 0,
+    public agility: number = 1
   ) {
     super();
   }
@@ -56,6 +67,7 @@ export class StatsComponent extends Component {
 export const ComponentRegistry: Record<string, any> = {
   NameComponent,
   PlayerComponent,
+  ArchetypeComponent,
   ResourceComponent,
   BuildingComponent,
   MaintenanceComponent,
