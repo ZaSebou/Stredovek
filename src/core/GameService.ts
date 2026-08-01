@@ -23,6 +23,7 @@ export class GameService {
   public world: World;
   private currentSaveId: number | undefined;
   public selectedHex: { q: number, r: number } | null = null;
+  public activeMapMode: 'local' | 'global' = 'local';
   public onStateChange: () => void = () => {};
 
   private constructor() {
@@ -76,7 +77,7 @@ export class GameService {
     
     // Oslabené počáteční statistiky (vyprofilují se po výběru)
     // hp, maxHp, energy, maxEnergy, attack, defense, intellect, mana, maxMana, agility
-    player.addComponent(new StatsComponent(50, 50, 20, 20, 1, 0, 1, 0, 0, 1));
+    player.addComponent(new StatsComponent(50, 50, 100, 100, 1, 0, 1, 0, 0, 1));
     
     // Prázdný strom dovedností
     player.addComponent(new SkillsComponent([], { farming: 0, crafting: 0, combat: 0, magic: 0 }));
@@ -86,13 +87,13 @@ export class GameService {
 
     this.world.addEntity(player);
 
-    // Vytvoření mapy (Statická předpřipravená startovní lokace)
-    const mapEntity = new Entity('world_map');
-    const tiles: TileData[] = [];
-    const radius = 4;
-    for (let q = -radius; q <= radius; q++) {
-      const r1 = Math.max(-radius, -q - radius);
-      const r2 = Math.min(radius, -q + radius);
+    // Vytvoření mapy (Statická předpřipravená lokální startovní lokace - Tier 0)
+    const localMapEntity = new Entity('world_map');
+    const localTiles: TileData[] = [];
+    const localRadius = 4;
+    for (let q = -localRadius; q <= localRadius; q++) {
+      const r1 = Math.max(-localRadius, -q - localRadius);
+      const r2 = Math.min(localRadius, -q + localRadius);
       for (let r = r1; r <= r2; r++) {
         let type: BiomeType = 'empty';
         if (q === 0 && r === 0) type = 'village';
@@ -101,17 +102,43 @@ export class GameService {
         else if (q === 2 && r === 0) type = 'road';
         else if (q === -2 && r === -1) type = 'water';
         else if (q === 0 && r === -2) type = 'obstacle'; // Skála
-        else if (Math.abs(q) + Math.abs(r) + Math.abs(-q-r) === radius * 2) type = 'nature'; // Okraje les
+        else if (Math.abs(q) + Math.abs(r) + Math.abs(-q-r) === localRadius * 2) type = 'nature'; // Okraje les
         
-        // Zpočátku je viditelný pouze střed (0,0) a jeho nejbližší okolí?
-        // Hráč chtěl "odhalovat průzkumem", takže vidí jen (0,0).
         const discovered = (q === 0 && r === 0);
-        
-        tiles.push({ q, r, type, discovered });
+        localTiles.push({ q, r, type, discovered });
       }
     }
-    mapEntity.addComponent(new MapComponent(tiles));
-    this.world.addEntity(mapEntity);
+    localMapEntity.addComponent(new MapComponent(localTiles));
+    this.world.addEntity(localMapEntity);
+
+    // Vytvoření globální mapy (Makro úroveň - Tier 0)
+    const globalMapEntity = new Entity('global_map');
+    const globalTiles: TileData[] = [];
+    const globalRadius = 6;
+    for (let q = -globalRadius; q <= globalRadius; q++) {
+      const r1 = Math.max(-globalRadius, -q - globalRadius);
+      const r2 = Math.min(globalRadius, -q + globalRadius);
+      for (let r = r1; r <= r2; r++) {
+        let type: BiomeType = 'empty';
+        let discovered = false;
+        
+        if (q === 0 && r === 0) {
+          type = 'village'; // Pozemek hráče z pohledu globální mapy
+          discovered = true;
+        } else if (q === 3 && r === -2) {
+          type = 'city'; // Vesnice jako další cíl
+          discovered = true;
+        } else if (Math.random() > 0.8) {
+          type = 'nature';
+        } else if (Math.random() > 0.9) {
+          type = 'obstacle';
+        }
+
+        globalTiles.push({ q, r, type, discovered });
+      }
+    }
+    globalMapEntity.addComponent(new MapComponent(globalTiles));
+    this.world.addEntity(globalMapEntity);
 
     // Smazat staré uložené pozice a uložit novou - ODSTRANĚNO
     // Nyní nezavoláme db.gameSaves.clear(), abychom umožnili více slotů.
@@ -234,7 +261,15 @@ export class GameService {
   }
 
   public getMapEntity(): Entity | undefined {
-    return this.world.entities.get('world_map');
+    return this.world.entities.get(this.activeMapMode === 'global' ? 'global_map' : 'world_map');
+  }
+
+  public switchMapMode(mode: 'local' | 'global') {
+    if (this.activeMapMode !== mode) {
+      this.activeMapMode = mode;
+      this.selectedHex = null; // Reset selection on switch
+      this.onStateChange();
+    }
   }
 
   public async exploreHex(q: number, r: number) {

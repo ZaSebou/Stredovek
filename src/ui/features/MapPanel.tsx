@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Map as MapIcon, Globe, MapPin } from 'lucide-react';
 import { gameService } from '../../core/GameService';
 import { MapComponent } from '../../core/ecs/components/MapComponent';
@@ -15,8 +15,7 @@ const getHexCorners = (cx: number, cy: number, size: number) => {
 };
 
 export const MapPanel: React.FC = () => {
-  const [isGlobal, setIsGlobal] = useState(false);
-  
+  const isGlobal = gameService.activeMapMode === 'global';
   const mapEntity = gameService.getMapEntity();
   const mapComp = mapEntity?.getComponent<MapComponent>('MapComponent');
   const tiles = mapComp?.tiles || [];
@@ -37,13 +36,13 @@ export const MapPanel: React.FC = () => {
         
         <div className="flex bg-[var(--surface-color)] rounded border border-[var(--border-color)] p-1">
           <button 
-            onClick={() => setIsGlobal(false)}
+            onClick={() => gameService.switchMapMode('local')}
             className={`px-3 py-1 rounded text-sm flex items-center gap-2 transition-colors ${!isGlobal ? 'bg-[var(--accent-color)] text-white' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}`}
           >
             <MapPin size={14} /> Lokální
           </button>
           <button 
-            onClick={() => setIsGlobal(true)}
+            onClick={() => gameService.switchMapMode('global')}
             className={`px-3 py-1 rounded text-sm flex items-center gap-2 transition-colors ${isGlobal ? 'bg-[var(--color-wood-500)] text-white' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}`}
           >
             <Globe size={14} /> Globální

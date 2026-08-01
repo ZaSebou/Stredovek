@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pickaxe, ArrowUpCircle, Eye } from 'lucide-react';
+import { Pickaxe, ArrowUpCircle, Eye, Navigation, PlusCircle } from 'lucide-react';
 import { gameService } from '../../core/GameService';
 import { MapComponent } from '../../core/ecs/components/MapComponent';
 
@@ -52,18 +52,46 @@ export const MapActionPanel: React.FC = () => {
               className="w-full bg-[var(--surface-color)] hover:bg-[var(--surface-light)] border border-[var(--color-wood-300)] text-left px-3 py-2 rounded transition-colors text-[var(--color-wood-300)] flex items-center gap-3 text-sm shadow-[0_0_10px_rgba(192,132,97,0.1)]"
             >
               <Eye size={16} />
-              Prozkoumat oblast (5 Energie)
+              Prozkoumat cestu (5 Energie)
             </button>
           ) : (
             <>
-              <button className="w-full bg-[var(--bg-color)] hover:bg-[var(--surface-light)] border border-[var(--border-color)] text-left px-3 py-2 rounded transition-colors text-[var(--text-primary)] flex items-center gap-3 text-sm">
-                <Pickaxe size={16} className="text-[var(--text-secondary)]" />
-                Založit pole (10 Energie)
-              </button>
-              <button disabled className="w-full bg-[var(--bg-color)]/50 border border-[var(--border-color)]/30 text-left px-3 py-2 rounded text-[var(--text-secondary)]/50 cursor-not-allowed flex items-center gap-3 text-sm">
-                <ArrowUpCircle size={16} />
-                Vylepšit (Chybí budova)
-              </button>
+              {gameService.activeMapMode === 'global' ? (
+                <>
+                  <button 
+                    onClick={() => alert('Cestování bude spouštět eventový systém (ve vývoji).')}
+                    className="w-full bg-[var(--bg-color)] hover:bg-[var(--surface-light)] border border-[var(--color-wood-400)] text-left px-3 py-2 rounded transition-colors text-[var(--color-wood-400)] flex items-center gap-3 text-sm"
+                  >
+                    <Navigation size={16} />
+                    Cestovat do lokace (20 Energie)
+                  </button>
+                  <button disabled className="w-full bg-[var(--bg-color)]/50 border border-[var(--border-color)]/30 text-left px-3 py-2 rounded text-[var(--text-secondary)]/50 cursor-not-allowed flex items-center justify-between text-sm">
+                    <div className="flex items-center gap-3">
+                      <PlusCircle size={16} />
+                      Založit novou vesnici
+                    </div>
+                    <span className="text-[10px] uppercase text-[var(--accent-color)] border border-[var(--accent-color)]/30 px-1.5 py-0.5 rounded">Ve vývoji</span>
+                  </button>
+                  <button disabled className="w-full bg-[var(--bg-color)]/50 border border-[var(--border-color)]/30 text-left px-3 py-2 rounded text-[var(--text-secondary)]/50 cursor-not-allowed flex items-center justify-between text-sm">
+                    <div className="flex items-center gap-3">
+                      <ArrowUpCircle size={16} />
+                      Povýšit vesnici na město
+                    </div>
+                    <span className="text-[10px] uppercase text-[var(--accent-color)] border border-[var(--accent-color)]/30 px-1.5 py-0.5 rounded">Ve vývoji</span>
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button className="w-full bg-[var(--bg-color)] hover:bg-[var(--surface-light)] border border-[var(--border-color)] text-left px-3 py-2 rounded transition-colors text-[var(--text-primary)] flex items-center gap-3 text-sm">
+                    <Pickaxe size={16} className="text-[var(--text-secondary)]" />
+                    Založit pole (10 Energie)
+                  </button>
+                  <button disabled className="w-full bg-[var(--bg-color)]/50 border border-[var(--border-color)]/30 text-left px-3 py-2 rounded text-[var(--text-secondary)]/50 cursor-not-allowed flex items-center gap-3 text-sm">
+                    <ArrowUpCircle size={16} />
+                    Vylepšit (Chybí budova)
+                  </button>
+                </>
+              )}
             </>
           )}
         </div>
