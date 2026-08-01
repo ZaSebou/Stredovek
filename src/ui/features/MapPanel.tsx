@@ -22,12 +22,8 @@ export const MapPanel: React.FC = () => {
   const tiles = mapComp?.tiles || [];
   const selectedHex = gameService.selectedHex;
 
-  const handleTileClick = (q: number, r: number, discovered: boolean) => {
-    if (!discovered) {
-      gameService.exploreHex(q, r);
-    } else {
-      gameService.selectHex(q, r);
-    }
+  const handleTileClick = (q: number, r: number) => {
+    gameService.selectHex(q, r);
   };
 
   return (
@@ -81,8 +77,8 @@ export const MapPanel: React.FC = () => {
                   fill={fill}
                   stroke={stroke}
                   strokeWidth={strokeWidth}
-                  className={`transition-colors duration-300 ${tile.discovered ? 'hover:brightness-125 cursor-pointer' : 'cursor-help hover:fill-[var(--surface-color)]'} ${isSelected ? 'relative z-10' : ''}`}
-                  onClick={() => handleTileClick(tile.q, tile.r, tile.discovered)}
+                  className={`transition-colors duration-300 ${tile.discovered ? 'hover:brightness-125 cursor-pointer' : 'cursor-pointer hover:fill-[var(--surface-color)]'} ${isSelected ? 'relative z-10' : ''}`}
+                  onClick={() => handleTileClick(tile.q, tile.r)}
                 >
                   <title>
                     {tile.discovered ? `Typ: ${tile.type} (q:${tile.q}, r:${tile.r})` : 'Neznámé území'}
