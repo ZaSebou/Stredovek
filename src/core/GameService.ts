@@ -8,7 +8,8 @@ import {
   MaintenanceComponent, 
   BuildingComponent, 
   StatsComponent,
-  ArchetypeComponent
+  ArchetypeComponent,
+  SkillsComponent
 } from './ecs/components/CoreComponents';
 import { MaintenanceSystem } from './ecs/systems/MaintenanceSystem';
 
@@ -66,6 +67,9 @@ export class GameService {
     // Oslabené počáteční statistiky (vyprofilují se po výběru)
     // hp, maxHp, energy, maxEnergy, attack, defense, intellect, mana, maxMana, agility
     player.addComponent(new StatsComponent(50, 50, 20, 20, 1, 0, 1, 0, 0, 1));
+    
+    // Prázdný strom dovedností
+    player.addComponent(new SkillsComponent([], { farming: 0, crafting: 0, combat: 0, magic: 0 }));
 
     this.world.addEntity(player);
 
@@ -176,6 +180,41 @@ export class GameService {
 
     await this.saveGame();
     this.onStateChange();
+  }
+
+  public async unlockSkill(skillId: string, category: 'farming' | 'crafting' | 'combat' | 'magic', cost: number) {
+    const player = this.getPlayerEntity();
+    if (!player) return;
+
+    const skills = player.getComponent<SkillsComponent>('SkillsComponent');
+    const stats = player.getComponent<StatsComponent>('StatsComponent');
+    
+    if (skills && stats && skills.xp[category] >= cost && !skills.unlockedSkills.includes(skillId)) {
+      skills.xp[category] -= cost;
+      skills.unlockedSkills.push(skillId);
+
+      // Aplikace trvalých bonusů podle ID
+      switch (skillId) {
+        case 'farm_2':
+          stats.maxEnergy += 20;
+          stats.energy += 20;
+          break;
+        case 'combat_1':
+          stats.attack += 2;
+          break;
+        case 'combat_2':
+          stats.defense += 2;
+          break;
+        case 'magic_1':
+          stats.maxMana += 20;
+          stats.mana += 20;
+          break;
+        // Zbytek zatím nemá stat-based efekt (odemyká recepty/stavby jinde)
+      }
+
+      await this.saveGame();
+      this.onStateChange();
+    }
   }
 
   public getPlayerEntity(): Entity | undefined {

@@ -3,7 +3,11 @@ import { Hammer, Clock, Pickaxe, Book, Sword, Coins } from 'lucide-react';
 import { gameService } from '../../core/GameService';
 import { ArchetypeComponent } from '../../core/ecs/components/CoreComponents';
 
-export const ActionPanel: React.FC = () => {
+interface ActionPanelProps {
+  onOpenSkillTree?: () => void;
+}
+
+export const ActionPanel: React.FC<ActionPanelProps> = ({ onOpenSkillTree }) => {
   const player = gameService.getPlayerEntity();
   const archetype = player?.getComponent<ArchetypeComponent>('ArchetypeComponent');
 
@@ -94,17 +98,14 @@ export const ActionPanel: React.FC = () => {
           Inventář a Vybavení
         </button>
 
-      </div>
-      
-      {/* Tlačítko pro další tah pevně dole */}
-      <div className="pt-4 border-t border-[var(--border-color)] mt-auto">
         <button 
-          onClick={() => gameService.nextTurn()}
-          className="w-full bg-[var(--color-wood-600)] hover:bg-[var(--color-wood-500)] text-white border border-[var(--color-wood-400)] py-3 px-4 rounded transition-colors flex items-center justify-center gap-2 font-bold shadow-lg"
+          onClick={onOpenSkillTree}
+          className="w-full bg-[var(--surface-color)] hover:bg-[var(--surface-light)] border border-[var(--color-gold-400)] text-left px-4 py-3 rounded transition-colors text-[var(--text-primary)] flex items-center gap-3 shadow-[0_0_10px_rgba(250,204,21,0.1)]"
         >
-          <Clock size={20} />
-          Ukončit tah (Další tah)
+          <span className="bg-[var(--bg-color)] px-2 py-1 rounded text-sm text-[var(--color-gold-400)] border border-[var(--color-gold-400)]/30">S</span>
+          <span className="text-[var(--color-gold-400)] font-medium tracking-wide">Strom Dovedností</span>
         </button>
+
       </div>
     </div>
   );

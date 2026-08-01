@@ -10,13 +10,14 @@ import { StatsPanel } from './ui/features/StatsPanel';
 import { ActionPanel } from './ui/features/ActionPanel';
 import { CraftingPanel } from './ui/features/CraftingPanel';
 import { CalculationPanel } from './ui/features/CalculationPanel';
+import { SkillTreeModal } from './ui/features/SkillTreeModal';
 import { gameService } from './core/GameService';
 
 type ScreenState = 'loading' | 'menu' | 'game';
 
 function App() {
   const [screen, setScreen] = useState<ScreenState>('loading');
-
+  const [isSkillTreeOpen, setIsSkillTreeOpen] = useState(false);
   const [, setTick] = useState(0);
 
   useEffect(() => {
@@ -53,17 +54,21 @@ function App() {
   }
 
   return (
-    <MainLayout 
-      hud={<HUD onBackToMenu={() => setScreen('menu')} />}
-      statusBar={<StatusBar />}
-      mapPanel={<MapPanel />}
-      mapActionPanel={<MapActionPanel />}
-      narrativePanel={<NarrativePanel />}
-      statsPanel={<StatsPanel />}
-      actionPanel={<ActionPanel />}
-      craftingPanel={<CraftingPanel />}
-      calculationPanel={<CalculationPanel />}
-    />
+    <>
+      <MainLayout 
+        hud={<HUD onBackToMenu={() => setScreen('menu')} />}
+        statusBar={<StatusBar />}
+        mapPanel={<MapPanel />}
+        mapActionPanel={<MapActionPanel />}
+        narrativePanel={<NarrativePanel />}
+        statsPanel={<StatsPanel />}
+        actionPanel={<ActionPanel onOpenSkillTree={() => setIsSkillTreeOpen(true)} />}
+        craftingPanel={<CraftingPanel />}
+        calculationPanel={<CalculationPanel />}
+      />
+      
+      {isSkillTreeOpen && <SkillTreeModal onClose={() => setIsSkillTreeOpen(false)} />}
+    </>
   );
 }
 

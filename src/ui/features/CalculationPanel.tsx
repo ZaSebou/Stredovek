@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Calculator } from 'lucide-react';
 
+import { gameService } from '../../core/GameService';
+
 export const CalculationPanel: React.FC = () => {
-  const [turn, setTurn] = useState(1);
+  const turn = gameService.getTurn();
 
   const handleEndTurn = () => {
-    setTurn(t => t + 1);
+    gameService.nextTurn();
   };
 
   return (

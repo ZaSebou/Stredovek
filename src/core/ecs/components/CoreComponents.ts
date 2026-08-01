@@ -18,6 +18,21 @@ export class ArchetypeComponent extends Component {
   }
 }
 
+export class SkillsComponent extends Component {
+  type = 'SkillsComponent';
+  constructor(
+    public unlockedSkills: string[] = [],
+    public xp: {
+      farming: number;
+      crafting: number;
+      combat: number;
+      magic: number;
+    } = { farming: 0, crafting: 0, combat: 0, magic: 0 }
+  ) {
+    super();
+  }
+}
+
 export class ResourceComponent extends Component {
   type = 'ResourceComponent';
   constructor(
@@ -68,6 +83,7 @@ export const ComponentRegistry: Record<string, any> = {
   NameComponent,
   PlayerComponent,
   ArchetypeComponent,
+  SkillsComponent,
   ResourceComponent,
   BuildingComponent,
   MaintenanceComponent,
