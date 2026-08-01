@@ -11,10 +11,9 @@ import {
   ArchetypeComponent,
   SkillsComponent,
   IntentComponent,
-  MapComponent,
-  TileData,
-  BiomeType
+  MapComponent
 } from './ecs/components/CoreComponents';
+import type { TileData, BiomeType } from './ecs/components/CoreComponents';
 import { MaintenanceSystem } from './ecs/systems/MaintenanceSystem';
 import { ArchetypeSystem } from './ecs/systems/ArchetypeSystem';
 import { ProgressionSystem } from './ecs/systems/ProgressionSystem';
