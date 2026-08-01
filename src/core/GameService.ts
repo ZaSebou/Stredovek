@@ -10,7 +10,10 @@ import {
   StatsComponent,
   ArchetypeComponent,
   SkillsComponent,
-  IntentComponent
+  IntentComponent,
+  MapComponent,
+  TileData,
+  BiomeType
 } from './ecs/components/CoreComponents';
 import { MaintenanceSystem } from './ecs/systems/MaintenanceSystem';
 import { ArchetypeSystem } from './ecs/systems/ArchetypeSystem';
@@ -82,6 +85,33 @@ export class GameService {
     player.addComponent(new IntentComponent([]));
 
     this.world.addEntity(player);
+
+    // Vytvoření mapy (Statická předpřipravená startovní lokace)
+    const mapEntity = new Entity('world_map');
+    const tiles: TileData[] = [];
+    const radius = 4;
+    for (let q = -radius; q <= radius; q++) {
+      const r1 = Math.max(-radius, -q - radius);
+      const r2 = Math.min(radius, -q + radius);
+      for (let r = r1; r <= r2; r++) {
+        let type: BiomeType = 'empty';
+        if (q === 0 && r === 0) type = 'village';
+        else if (q === 1 && r === -1) type = 'nature';
+        else if (q === -1 && r === 2) type = 'nature';
+        else if (q === 2 && r === 0) type = 'road';
+        else if (q === -2 && r === -1) type = 'water';
+        else if (q === 0 && r === -2) type = 'obstacle'; // Skála
+        else if (Math.abs(q) + Math.abs(r) + Math.abs(-q-r) === radius * 2) type = 'nature'; // Okraje les
+        
+        // Zpočátku je viditelný pouze střed (0,0) a jeho nejbližší okolí?
+        // Hráč chtěl "odhalovat průzkumem", takže vidí jen (0,0).
+        const discovered = (q === 0 && r === 0);
+        
+        tiles.push({ q, r, type, discovered });
+      }
+    }
+    mapEntity.addComponent(new MapComponent(tiles));
+    this.world.addEntity(mapEntity);
 
     // Smazat staré uložené pozice a uložit novou - ODSTRANĚNO
     // Nyní nezavoláme db.gameSaves.clear(), abychom umožnili více slotů.
@@ -202,6 +232,35 @@ export class GameService {
   public getPlayerEntity(): Entity | undefined {
     return this.world.entities.get('player');
   }
+
+  public getMapEntity(): Entity | undefined {
+    return this.world.entities.get('world_map');
+  }
+
+  public async exploreHex(q: number, r: number) {
+    const player = this.getPlayerEntity();
+    const map = this.getMapEntity();
+    if (!player || !map) return;
+
+    const stats = player.getComponent<StatsComponent>('StatsComponent');
+    const mapComp = map.getComponent<MapComponent>('MapComponent');
+    
+    if (stats && mapComp) {
+      if (stats.energy >= 5) {
+        stats.energy -= 5;
+        const tile = mapComp.tiles.find(t => t.q === q && t.r === r);
+        if (tile) {
+          tile.discovered = true;
+        }
+        await this.saveGame();
+        this.onStateChange();
+      } else {
+        // TODO: Místo konzole posílat do UI logu
+        console.warn("Nedostatek energie k průzkumu!");
+      }
+    }
+  }
+
 }
 
 export const gameService = GameService.getInstance();

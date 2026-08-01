@@ -1,4 +1,6 @@
 import { Component } from '../ECS';
+export * from './MapComponent';
+import { MapComponent } from './MapComponent';
 
 export class NameComponent extends Component {
   type = 'NameComponent';
@@ -99,5 +101,6 @@ export const ComponentRegistry: Record<string, any> = {
   BuildingComponent,
   MaintenanceComponent,
   StatsComponent,
-  IntentComponent
+  IntentComponent,
+  MapComponent
 };

@@ -1,11 +1,34 @@
 import React, { useState } from 'react';
 import { Map as MapIcon, Globe, MapPin } from 'lucide-react';
+import { gameService } from '../../core/GameService';
+import { MapComponent } from '../../core/ecs/components/MapComponent';
+
+const HEX_SIZE = 22;
+const SQRT3 = Math.sqrt(3);
+
+const getHexCorners = (cx: number, cy: number, size: number) => {
+  return [0, 1, 2, 3, 4, 5].map(i => {
+    const angle_deg = 60 * i - 30;
+    const angle_rad = Math.PI / 180 * angle_deg;
+    return `${cx + size * Math.cos(angle_rad)},${cy + size * Math.sin(angle_rad)}`;
+  }).join(' ');
+};
 
 export const MapPanel: React.FC = () => {
   const [isGlobal, setIsGlobal] = useState(false);
+  
+  const mapEntity = gameService.getMapEntity();
+  const mapComp = mapEntity?.getComponent<MapComponent>('MapComponent');
+  const tiles = mapComp?.tiles || [];
 
-  // Generování jednoduché placeholder mřížky 16x8
-  const gridCells = Array.from({ length: 128 }, (_, i) => i);
+  const handleTileClick = (q: number, r: number, discovered: boolean) => {
+    // Prozkoumávání bude naší další fází
+    if (!discovered) {
+      gameService.exploreHex(q, r);
+    } else {
+      console.log(`Zvolen prozkoumaný hex q:${q} r:${r}`);
+    }
+  };
 
   return (
     <div className="flex flex-col h-full bg-[var(--surface-color)]/20 rounded border border-[var(--border-color)] overflow-hidden">
@@ -32,20 +55,41 @@ export const MapPanel: React.FC = () => {
         </div>
       </div>
 
-      {/* Zjednodušená interaktivní mřížka */}
-      <div className="flex-1 p-4 flex items-center justify-center bg-[#1a0f0a] overflow-hidden">
-        <div 
-          className="grid gap-px w-full max-w-3xl"
-          style={{ gridTemplateColumns: 'repeat(16, minmax(0, 1fr))' }}
+      {/* Hex mřížka */}
+      <div className="flex-1 flex items-center justify-center bg-[var(--bg-color)] overflow-hidden relative">
+        <svg 
+          viewBox="-200 -200 400 400" 
+          className="w-full h-full max-w-full max-h-full drop-shadow-xl"
         >
-          {gridCells.map((i) => (
-            <div 
-              key={i} 
-              className="bg-[var(--surface-color)] hover:bg-[var(--accent-color)] border border-[var(--border-color)]/30 cursor-pointer transition-colors duration-200 aspect-square"
-              onClick={() => console.log(`Kliknuto na políčko ${i}`)}
-            />
-          ))}
-        </div>
+          <g>
+            {tiles.map((tile) => {
+              // Výpočet pozice středu hexu
+              const cx = HEX_SIZE * SQRT3 * (tile.q + tile.r / 2);
+              const cy = HEX_SIZE * 3/2 * tile.r;
+              
+              const points = getHexCorners(cx, cy, HEX_SIZE - 1); // -1 pro mezeru mezi hexy
+              
+              const fill = tile.discovered ? `var(--biome-${tile.type})` : `var(--biome-undiscovered)`;
+              const stroke = tile.discovered ? `var(--border-color)` : `#2a1a12`;
+              
+              return (
+                <polygon
+                  key={`${tile.q}_${tile.r}`}
+                  points={points}
+                  fill={fill}
+                  stroke={stroke}
+                  strokeWidth="1.5"
+                  className={`transition-colors duration-300 ${tile.discovered ? 'hover:brightness-125 cursor-pointer' : 'cursor-help hover:fill-[var(--surface-color)]'}`}
+                  onClick={() => handleTileClick(tile.q, tile.r, tile.discovered)}
+                >
+                  <title>
+                    {tile.discovered ? `Typ: ${tile.type} (q:${tile.q}, r:${tile.r})` : 'Neznámé území'}
+                  </title>
+                </polygon>
+              );
+            })}
+          </g>
+        </svg>
       </div>
     </div>
   );

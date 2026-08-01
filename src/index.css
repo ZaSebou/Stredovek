@@ -28,6 +28,16 @@
     --text-secondary: var(--color-parchment-200);
     --accent-color: var(--color-wood-400);
     --border-color: var(--color-wood-600);
+    
+    --biome-empty: var(--color-wood-800);
+    --biome-village: #59351e;
+    --biome-city: var(--color-gold-500);
+    --biome-road: var(--color-wood-700);
+    --biome-nature: #20351d;
+    --biome-obstacle: #2f2a28;
+    --biome-fort: #4e2222;
+    --biome-water: #182e44;
+    --biome-undiscovered: #140b06;
   }
 
   body {
