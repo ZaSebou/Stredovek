@@ -13,7 +13,7 @@ export const ActionPanel: React.FC<ActionPanelProps> = ({ onOpenSkillTree }) => 
 
   if (archetype && !archetype.chosen) {
     return (
-      <div className="flex flex-col h-full bg-[var(--surface-color)]/30 border-r border-b border-[var(--border-color)] overflow-hidden p-6">
+      <div className="flex flex-col h-full bg-[var(--surface-color)]/30 border-r border-[var(--border-color)] overflow-hidden p-6">
         <div className="flex items-center gap-3 border-b border-[var(--border-color)] pb-4 mb-4">
           <h2 className="text-xl font-medium text-[var(--text-primary)]">Počátek tvé cesty</h2>
         </div>
@@ -78,7 +78,7 @@ export const ActionPanel: React.FC<ActionPanelProps> = ({ onOpenSkillTree }) => 
   }
 
   return (
-    <div className="flex flex-col h-full bg-[var(--surface-color)]/30 border-r border-b border-[var(--border-color)] overflow-hidden p-6">
+    <div className="flex flex-col h-full bg-[var(--surface-color)]/30 border-r border-[var(--border-color)] overflow-hidden p-6">
       <div className="flex items-center gap-3 border-b border-[var(--border-color)] pb-4 mb-4">
         <Hammer className="text-[var(--accent-color)]" size={24} />
         <h2 className="text-xl font-medium text-[var(--text-primary)]">Správa & Osobní Akce</h2>

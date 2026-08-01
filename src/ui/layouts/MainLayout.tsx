@@ -51,22 +51,22 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       {/* 4. SPODNÍ ČÁST (Statistiky + Akce/Crafting + Logy) */}
       <div className="flex-[5] min-h-0 flex w-full border-t border-[var(--border-color)]">
         {/* Levý panel: Statistiky hráče/armády */}
-        <div className="flex-1 min-h-0 flex flex-col">
+        <div className="flex-[1] min-h-0 flex flex-col">
           {statsPanel}
         </div>
         
-        {/* Prostřední panel: Akční pole nahoře, Crafting dole */}
-        <div className="flex-[1.2] min-h-0 flex flex-col">
-          <div className="flex-[1] min-h-0 flex flex-col border-b border-[var(--border-color)]">
+        {/* Prostřední panely: Akční pole vlevo, Crafting vpravo */}
+        <div className="flex-[2.5] min-h-0 flex flex-row">
+          <div className="flex-1 min-h-0 flex flex-col">
             {actionPanel}
           </div>
-          <div className="flex-[1] min-h-0 flex flex-col">
+          <div className="flex-1 min-h-0 flex flex-col">
             {craftingPanel}
           </div>
         </div>
         
         {/* Pravý panel: Tahové a bitevní propočty */}
-        <div className="flex-1 min-h-0 flex flex-col">
+        <div className="flex-[1] min-h-0 flex flex-col">
           {calculationPanel}
         </div>
       </div>
