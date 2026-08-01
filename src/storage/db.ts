@@ -1,4 +1,5 @@
 import Dexie, { type Table } from 'dexie';
+import { logger } from '../core/logger';
 
 export interface GameSaveState {
   id?: number;
@@ -26,6 +27,11 @@ export const db = new MedievalDatabase();
  * Pomocná funkce pro zjištění, zda existuje alespoň jeden uložený stav hry.
  */
 export async function hasActiveSave(): Promise<boolean> {
-  const count = await db.gameSaves.count();
-  return count > 0;
+  try {
+    const count = await db.gameSaves.count();
+    return count > 0;
+  } catch (error) {
+    logger.error('Database hasActiveSave', error);
+    return false;
+  }
 }
