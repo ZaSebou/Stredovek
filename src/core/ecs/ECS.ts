@@ -1,3 +1,5 @@
+import type { ComponentConstructor } from './components/CoreComponents';
+
 /**
  * Základní třída pro Komponenty. Komponenta by měla obsahovat pouze data, žádnou logiku.
  */
@@ -87,7 +89,7 @@ export class World {
     return JSON.stringify({ currentTurn: this.currentTurn, entities: plainEntities });
   }
 
-  deserialize(json: string, componentRegistry: Record<string, any>) {
+  deserialize(json: string, componentRegistry: Record<string, ComponentConstructor>) {
     const data = JSON.parse(json);
     this.currentTurn = data.currentTurn || 0;
     this.entities.clear();

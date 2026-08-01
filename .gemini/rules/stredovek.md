@@ -1,6 +1,6 @@
 ---
 name: project-stredovek
-description: Lokální pravidla pro projekt Středověk (GDD, Textové UI, Architektura, Pre-commit).
+description: Lokální pravidla pro projekt Středověk (GDD, Textové UI, Architektura, Pre-commit, Striktní TypeScript).
 ---
 
 # Lokální pravidla pro projekt Středověk
@@ -22,3 +22,8 @@ description: Lokální pravidla pro projekt Středověk (GDD, Textové UI, Archi
 ## 4. Kvalita kódu před commitem (Pre-commit)
 - Vždy, než provedeš příkaz `git commit` a následný `push` (jak určuje globální pravidlo), MUSÍŠ v projektu spustit kontrolní skripty.
 - Spusť linter a kontrolu kódu (např. `npm run lint`, případně typovou kontrolu, pokud se používá TypeScript) přes příkazovou řádku, abys ověřil, že nově napsaný kód neobsahuje zbytečné chyby nebo varování.
+
+## 5. Striktní TypeScript (Zákaz ANY na konci iterace)
+- Během rychlého experimentování a hledání řešení je dočasné použití `any` akceptovatelné pro zachování rychlosti.
+- **VŠAK na konci iterace (před commitem) MUSÍ být kód 100% striktně otypován.**
+- AI nesmí odevzdat finální hotovou funkcionalitu s `any` – vždy musí definovat přesné rozhraní nebo typ (přesnost a kvalita má na konci přednost).

@@ -92,7 +92,10 @@ export class IntentComponent extends Component {
 }
 
 // Slouží jako slovník pro deserializaci
-export const ComponentRegistry: Record<string, any> = {
+// Definice typu pro třídu dědící z Component
+export type ComponentConstructor = new (...args: any[]) => Component;
+
+export const ComponentRegistry: Record<string, ComponentConstructor> = {
   NameComponent,
   PlayerComponent,
   ArchetypeComponent,
