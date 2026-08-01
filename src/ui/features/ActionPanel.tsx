@@ -1,0 +1,41 @@
+import React from 'react';
+import { Hammer, Clock } from 'lucide-react';
+import { gameService } from '../../core/GameService';
+
+export const ActionPanel: React.FC = () => {
+  return (
+    <div className="flex flex-col h-full bg-[var(--surface-color)]/30 border-r border-b border-[var(--border-color)] overflow-hidden p-6">
+      <div className="flex items-center gap-3 border-b border-[var(--border-color)] pb-4 mb-4">
+        <Hammer className="text-[var(--accent-color)]" size={24} />
+        <h2 className="text-xl font-medium text-[var(--text-primary)]">Správa & Osobní Akce</h2>
+      </div>
+
+      <div className="flex-1 flex flex-col gap-3 overflow-y-auto custom-scrollbar pr-2">
+        <p className="text-sm text-[var(--text-secondary)] mb-2 italic">Akce nezávislé na vybraném políčku.</p>
+        
+        {/* Placeholder tlačítka simulující globální akce */}
+        <button className="w-full bg-[var(--surface-color)] hover:bg-[var(--surface-light)] border border-[var(--border-color)] text-left px-4 py-3 rounded transition-colors text-[var(--text-primary)] flex items-center gap-3">
+          <span className="bg-[var(--bg-color)] px-2 py-1 rounded text-sm text-[var(--text-secondary)]">A</span>
+          Odpočinek (Doplnit Energii)
+        </button>
+        
+        <button className="w-full bg-[var(--surface-color)] hover:bg-[var(--surface-light)] border border-[var(--border-color)] text-left px-4 py-3 rounded transition-colors text-[var(--text-primary)] flex items-center gap-3">
+          <span className="bg-[var(--bg-color)] px-2 py-1 rounded text-sm text-[var(--text-secondary)]">B</span>
+          Inventář a Vybavení
+        </button>
+
+      </div>
+      
+      {/* Tlačítko pro další tah pevně dole */}
+      <div className="pt-4 border-t border-[var(--border-color)] mt-auto">
+        <button 
+          onClick={() => gameService.nextTurn()}
+          className="w-full bg-[var(--color-wood-600)] hover:bg-[var(--color-wood-500)] text-white border border-[var(--color-wood-400)] py-3 px-4 rounded transition-colors flex items-center justify-center gap-2 font-bold shadow-lg"
+        >
+          <Clock size={20} />
+          Ukončit tah (Další tah)
+        </button>
+      </div>
+    </div>
+  );
+};
