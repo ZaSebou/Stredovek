@@ -22,6 +22,18 @@
     - Dole (zleva doprava): 1. Tabulka statistik hráče/armády, 2. Akční pole pro interakce a crafting (reagující na mapu), 3. Bitevní a tahové přepočty s logy.
 - **Evoluce UI motivu (Theme Evolution):** Barvy rozhraní odráží pokrok (raná fáze = dřevěný dark mode, pokročilá = zlatavá, end-game = nachová/purpurová).
 
+### Víceúrovňová Mapa a Progrese (Map Tiers)
+Systém mapy reflektuje fázi a vliv hráče ve světě pomocí provázaných úrovní.
+- **Milníky progrese (Tiers):**
+  - **Tier 0:** Lokální = Pozemek (farma) | Globální = Cesta k nejbližší Vesnici
+  - **Tier 1:** Lokální = Vesnice | Globální = Kraj (hlavní bod: Město)
+  - **Tier 2:** Lokální = Město | Globální = Oblast (hlavní bod: Hrad)
+  - **Tier 3:** Lokální = Hrad | Globální = Říše (hlavní bod: Palác)
+- **Cestování a průzkum:** Přesun do jiného uzlu (např. do vesnice) vyžaduje nejprve prozkoumání příslušné cesty na globální mapě.
+- **Rozvoj a návrat:** Hráč musí aktivně spravovat a rozvíjet každou lokaci (vesnici, město) ve své říši. Na jakýkoliv již objevený lokální bod (včetně startovního pozemku) se lze vrátit proklikem na jeho hex na globální mapě. Hráč má možnost svůj startovní pozemek povýšit historicky až na úroveň paláce.
+- **Alternativní (Skryté) lokace:** Globální mapa obsahuje body skryté před běžným zrakem (např. *Ležení, Tábor, Podzemí*). Objeví se a zpřístupní se pouze při alternativních scénářích (splnění specifického questu, rozhodnutí příběhu, vzpoura, temná stezka zloděje). Pro tyto cesty zůstává základní globální mapa stejná, ale odhalují se v ní nové vrstvy/uzly.
+- **Makro-interakce na globální mapě:** Postupem času se hráči odemknou možnosti reagovat s globální mapou (např. založení nové vsi, povýšení vesnice na město), které se dynamicky odvíjí od jeho aktuálního "statusu" a zdrojů. Některé z těchto funkcí se mohou v rané fázi v UI objevovat jako možnosti označené *"Ve vývoji"*.
+
 ### Pilíře
 - **Události (Hybrid Event Architecture):** Pevně psané questy (Static Narrative Graph) kombinované se systémově generovanými situacemi.
 - **Řemesla (Crafting):** Tabulkový a přísně deterministický systém. Dovednosti odemykají širší katalogy receptů. Vylepšování předmětů probíhá klasickou výrobou nových, nebo tabulkovou úpravou. 
