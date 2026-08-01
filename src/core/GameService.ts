@@ -83,15 +83,39 @@ export class GameService {
 
     this.world.addEntity(player);
 
-    // Smazat staré uložené pozice a uložit novou
-    await db.gameSaves.clear();
-    const saveState = {
-      turn: this.world.currentTurn,
-      serializedWorld: this.world.serialize(),
-      lastSavedAt: new Date()
-    };
-    this.currentSaveId = await db.gameSaves.add(saveState);
+    // Smazat staré uložené pozice a uložit novou - ODSTRANĚNO
+    // Nyní nezavoláme db.gameSaves.clear(), abychom umožnili více slotů.
+    this.currentSaveId = undefined; // Pro jistotu, aby to byl nový save
+    
+    await this.saveGame();
     this.onStateChange();
+  }
+
+  public async loadGameById(id: number): Promise<boolean> {
+    const save = await db.gameSaves.get(id);
+    if (save) {
+      this.currentSaveId = save.id;
+      this.world = new World();
+      this.world.addSystem(new MaintenanceSystem());
+      this.world.addIntentSystem(new ArchetypeSystem());
+      this.world.addIntentSystem(new ProgressionSystem());
+      this.world.deserialize(save.serializedWorld, ComponentRegistry);
+      this.onStateChange();
+      return true;
+    }
+    return false;
+  }
+
+  public async getAvailableSaves() {
+    return await db.gameSaves.orderBy('lastSavedAt').reverse().toArray();
+  }
+
+  public async deleteSave(id: number) {
+    await db.gameSaves.delete(id);
+    // Pokud jsme smazali aktuálně načtenou hru, můžeme ji zkusit odnastavit, ale typicky to hráč dělá v menu
+    if (this.currentSaveId === id) {
+      this.currentSaveId = undefined;
+    }
   }
 
   public async loadGame(): Promise<boolean> {
@@ -120,14 +144,25 @@ export class GameService {
   }
 
   private async saveGame() {
+    const player = this.getPlayerEntity();
+    const nameComp = player?.getComponent<NameComponent>('NameComponent');
+    const archComp = player?.getComponent<ArchetypeComponent>('ArchetypeComponent');
+
+    const characterName = nameComp?.name || 'Neznámý rolník';
+    const archetype = archComp?.archetypeId || null;
+
     if (this.currentSaveId !== undefined) {
       await db.gameSaves.update(this.currentSaveId, {
+        characterName,
+        archetype,
         turn: this.world.currentTurn,
         serializedWorld: this.world.serialize(),
         lastSavedAt: new Date()
       });
     } else {
       const saveState = {
+        characterName,
+        archetype,
         turn: this.world.currentTurn,
         serializedWorld: this.world.serialize(),
         lastSavedAt: new Date()

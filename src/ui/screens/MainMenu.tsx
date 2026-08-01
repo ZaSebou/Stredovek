@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { hasActiveSave } from '../../storage/db';
-import { Crown, Play, Save, Settings } from 'lucide-react';
+import { Crown, Play, Settings, Trash2 } from 'lucide-react';
+import { gameService } from '../../core/GameService';
+import type { GameSaveState } from '../../storage/db';
 
 interface MainMenuProps {
   onStartNewGame: () => void;
@@ -8,11 +9,30 @@ interface MainMenuProps {
 }
 
 export const MainMenu: React.FC<MainMenuProps> = ({ onStartNewGame, onContinueGame }) => {
-  const [hasSave, setHasSave] = useState(false);
+  const [saves, setSaves] = useState<GameSaveState[]>([]);
 
   useEffect(() => {
-    hasActiveSave().then(setHasSave);
+    loadSaves();
   }, []);
+
+  const loadSaves = () => {
+    gameService.getAvailableSaves().then(setSaves);
+  };
+
+  const handleLoadSave = async (id: number) => {
+    const success = await gameService.loadGameById(id);
+    if (success) {
+      onContinueGame();
+    }
+  };
+
+  const handleDeleteSave = async (e: React.MouseEvent, id: number) => {
+    e.stopPropagation(); // Zabránit načtení hry při kliknutí na koš
+    if (window.confirm("Opravdu chceš smazat tuto pozici?")) {
+      await gameService.deleteSave(id);
+      loadSaves(); // Obnovit seznam
+    }
+  };
 
   return (
     <div className="flex items-center justify-center h-screen w-full bg-[var(--bg-color)] text-[var(--text-primary)]">
@@ -27,30 +47,43 @@ export const MainMenu: React.FC<MainMenuProps> = ({ onStartNewGame, onContinueGa
 
         {/* Menu tlačítka */}
         <div className="w-full flex flex-col gap-4 px-8">
-          {hasSave && (
-            <button 
-              onClick={onContinueGame}
-              className="w-full flex items-center justify-center gap-3 bg-[var(--color-wood-600)] hover:bg-[var(--color-wood-500)] text-white py-4 px-6 rounded border border-[var(--color-wood-400)] transition-all transform hover:scale-105 shadow-lg"
-            >
-              <Save size={20} />
-              Pokračovat v dynastii
-            </button>
+          
+          {saves.length > 0 && (
+            <div className="flex flex-col gap-2 mb-4">
+              <h3 className="text-[var(--color-wood-400)] text-sm tracking-wide uppercase mb-2 text-center">Rozehrané hry</h3>
+              {saves.map(save => (
+                <div 
+                  key={save.id}
+                  onClick={() => save.id && handleLoadSave(save.id)}
+                  className="w-full flex items-center justify-between bg-[var(--surface-color)] hover:bg-[var(--surface-light)] py-3 px-4 rounded border border-[var(--color-wood-400)] cursor-pointer transition-all transform hover:scale-[1.02] shadow-md"
+                >
+                  <div className="flex flex-col">
+                    <span className="font-medium text-white">{save.characterName} {save.archetype ? `(${save.archetype})` : ''}</span>
+                    <span className="text-xs text-[var(--text-secondary)]">Tah {save.turn} • {new Date(save.lastSavedAt).toLocaleDateString()}</span>
+                  </div>
+                  <button 
+                    onClick={(e) => save.id && handleDeleteSave(e, save.id)}
+                    className="p-2 text-[var(--color-red-400)] hover:text-red-300 hover:bg-red-400/10 rounded transition-colors"
+                    title="Smazat pozici"
+                  >
+                    <Trash2 size={18} />
+                  </button>
+                </div>
+              ))}
+            </div>
           )}
 
           <button 
-            onClick={() => {
-              if (hasSave && !window.confirm("Opravdu chceš přemazat stávající rozehranou hru?")) return;
-              onStartNewGame();
-            }}
-            className={`w-full flex items-center justify-center gap-3 py-4 px-6 rounded border transition-all ${!hasSave ? 'bg-[var(--color-wood-600)] hover:bg-[var(--color-wood-500)] text-white border-[var(--color-wood-400)] shadow-lg hover:scale-105' : 'bg-transparent hover:bg-[var(--surface-color)] text-[var(--text-secondary)] border-[var(--border-color)]'}`}
+            onClick={onStartNewGame}
+            className={`w-full flex items-center justify-center gap-3 py-4 px-6 rounded border transition-all ${saves.length === 0 ? 'bg-[var(--color-wood-600)] hover:bg-[var(--color-wood-500)] text-white border-[var(--color-wood-400)] shadow-lg hover:scale-105' : 'bg-transparent hover:bg-[var(--surface-color)] text-white border-[var(--color-wood-400)]'}`}
           >
             <Play size={20} />
-            {hasSave ? 'Nová Hra (Přemazat save)' : 'Zahájit Novou Hru'}
+            Zahájit Novou Hru
           </button>
 
           <button className="w-full flex items-center justify-center gap-3 bg-transparent hover:bg-[var(--surface-color)] text-[var(--text-secondary)] py-4 px-6 rounded border border-[var(--border-color)] transition-colors">
             <Settings size={20} />
-            Nastavení (Verze 0.5.1)
+            Nastavení (Verze 0.6.1)
           </button>
         </div>
         

@@ -2,6 +2,8 @@ import Dexie, { type Table } from 'dexie';
 
 export interface GameSaveState {
   id?: number;
+  characterName: string;
+  archetype: string | null;
   turn: number;
   serializedWorld: string; // JSON reprezentace ECS pro jednoduchost
   lastSavedAt: Date;
