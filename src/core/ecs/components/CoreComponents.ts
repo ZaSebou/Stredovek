@@ -78,6 +78,17 @@ export class StatsComponent extends Component {
   }
 }
 
+export type Intent = 
+  | { type: 'choose_archetype'; archetypeId: 'builder' | 'thief' | 'mage' | 'warrior' }
+  | { type: 'unlock_skill'; skillId: string; category: 'farming' | 'crafting' | 'combat' | 'magic'; cost: number };
+
+export class IntentComponent extends Component {
+  type = 'IntentComponent';
+  constructor(public intents: Intent[] = []) {
+    super();
+  }
+}
+
 // Slouží jako slovník pro deserializaci
 export const ComponentRegistry: Record<string, any> = {
   NameComponent,
@@ -87,5 +98,6 @@ export const ComponentRegistry: Record<string, any> = {
   ResourceComponent,
   BuildingComponent,
   MaintenanceComponent,
-  StatsComponent
+  StatsComponent,
+  IntentComponent
 };

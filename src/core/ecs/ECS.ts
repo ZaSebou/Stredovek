@@ -43,6 +43,7 @@ export abstract class System {
 export class World {
   public entities: Map<string, Entity> = new Map();
   public systems: System[] = [];
+  public intentSystems: System[] = [];
   public currentTurn: number = 0;
 
   addEntity(entity: Entity) {
@@ -53,6 +54,10 @@ export class World {
     this.systems.push(system);
   }
 
+  addIntentSystem(system: System) {
+    this.intentSystems.push(system);
+  }
+
   /**
    * Zpracování konce tahu – spustí všechny systémy v definovaném pořadí.
    */
@@ -60,6 +65,16 @@ export class World {
     this.currentTurn++;
     const entityList = Array.from(this.entities.values());
     for (const system of this.systems) {
+      system.update(entityList, this.currentTurn);
+    }
+  }
+
+  /**
+   * Zpracování fronty záměrů – zpracuje uživatelské akce bez posunu herního času.
+   */
+  processIntents() {
+    const entityList = Array.from(this.entities.values());
+    for (const system of this.intentSystems) {
       system.update(entityList, this.currentTurn);
     }
   }

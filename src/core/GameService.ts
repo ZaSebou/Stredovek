@@ -9,9 +9,12 @@ import {
   BuildingComponent, 
   StatsComponent,
   ArchetypeComponent,
-  SkillsComponent
+  SkillsComponent,
+  IntentComponent
 } from './ecs/components/CoreComponents';
 import { MaintenanceSystem } from './ecs/systems/MaintenanceSystem';
+import { ArchetypeSystem } from './ecs/systems/ArchetypeSystem';
+import { ProgressionSystem } from './ecs/systems/ProgressionSystem';
 
 export class GameService {
   private static instance: GameService;
@@ -22,6 +25,8 @@ export class GameService {
   private constructor() {
     this.world = new World();
     this.world.addSystem(new MaintenanceSystem());
+    this.world.addIntentSystem(new ArchetypeSystem());
+    this.world.addIntentSystem(new ProgressionSystem());
   }
 
   public static getInstance(): GameService {
@@ -34,6 +39,8 @@ export class GameService {
   public async startNewGame() {
     this.world = new World();
     this.world.addSystem(new MaintenanceSystem());
+    this.world.addIntentSystem(new ArchetypeSystem());
+    this.world.addIntentSystem(new ProgressionSystem());
     this.world.currentTurn = 0;
 
     // Vytvoření hráče s požadovanými počátečními zdroji
@@ -71,6 +78,9 @@ export class GameService {
     // Prázdný strom dovedností
     player.addComponent(new SkillsComponent([], { farming: 0, crafting: 0, combat: 0, magic: 0 }));
 
+    // Fronta záměrů
+    player.addComponent(new IntentComponent([]));
+
     this.world.addEntity(player);
 
     // Smazat staré uložené pozice a uložit novou
@@ -90,6 +100,8 @@ export class GameService {
       this.currentSaveId = save.id;
       this.world = new World(); // Reset and add systems
       this.world.addSystem(new MaintenanceSystem());
+      this.world.addIntentSystem(new ArchetypeSystem());
+      this.world.addIntentSystem(new ProgressionSystem());
       this.world.deserialize(save.serializedWorld, ComponentRegistry);
       this.onStateChange();
       return true;
@@ -128,58 +140,10 @@ export class GameService {
     const player = this.getPlayerEntity();
     if (!player) return;
 
-    const archComp = player.getComponent<ArchetypeComponent>('ArchetypeComponent');
-    const statsComp = player.getComponent<StatsComponent>('StatsComponent');
-    const resComp = player.getComponent<ResourceComponent>('ResourceComponent');
-
-    if (archComp && statsComp && resComp) {
-      archComp.chosen = true;
-      archComp.archetypeId = archetypeId;
-
-      switch (archetypeId) {
-        case 'builder':
-          statsComp.hp = statsComp.maxHp = 100;
-          statsComp.energy = statsComp.maxEnergy = 80;
-          statsComp.attack = 3;
-          statsComp.defense = 2;
-          statsComp.intellect = 1;
-          statsComp.agility = 2;
-          statsComp.energy -= 5; // Námaha na vykopání rýče
-          resComp.items.push({ type: 'Rýč', amount: 1 });
-          break;
-        case 'thief':
-          statsComp.hp = statsComp.maxHp = 80;
-          statsComp.energy = statsComp.maxEnergy = 60;
-          statsComp.attack = 4;
-          statsComp.defense = 1;
-          statsComp.intellect = 2;
-          statsComp.agility = 5;
-          statsComp.energy -= 5; // Námaha na odvedení pozornosti
-          resComp.gold += 50; // Ukradený měšec
-          resComp.items.push({ type: 'Dýka', amount: 1 });
-          break;
-        case 'mage':
-          statsComp.hp = statsComp.maxHp = 60;
-          statsComp.energy = statsComp.maxEnergy = 40;
-          statsComp.attack = 1;
-          statsComp.defense = 0;
-          statsComp.intellect = 8;
-          statsComp.agility = 1;
-          statsComp.maxMana = statsComp.mana = 40;
-          statsComp.energy -= 10; // Čtení těžké staré knihy
-          resComp.items.push({ type: 'Kniha magie', amount: 1 });
-          break;
-        case 'warrior':
-          statsComp.hp = statsComp.maxHp = 120;
-          statsComp.energy = statsComp.maxEnergy = 50;
-          statsComp.attack = 8;
-          statsComp.defense = 5;
-          statsComp.intellect = 1;
-          statsComp.agility = 1;
-          statsComp.energy -= 15; // Vytáhnout těžký zrezivělý meč
-          resComp.items.push({ type: 'Rezavý meč', amount: 1 });
-          break;
-      }
+    const intentComp = player.getComponent<IntentComponent>('IntentComponent');
+    if (intentComp) {
+      intentComp.intents.push({ type: 'choose_archetype', archetypeId });
+      this.world.processIntents();
     }
 
     await this.saveGame();
@@ -190,35 +154,14 @@ export class GameService {
     const player = this.getPlayerEntity();
     if (!player) return;
 
-    const skills = player.getComponent<SkillsComponent>('SkillsComponent');
-    const stats = player.getComponent<StatsComponent>('StatsComponent');
-    
-    if (skills && stats && skills.xp[category] >= cost && !skills.unlockedSkills.includes(skillId)) {
-      skills.xp[category] -= cost;
-      skills.unlockedSkills.push(skillId);
-
-      // Aplikace trvalých bonusů podle ID
-      switch (skillId) {
-        case 'farm_2':
-          stats.maxEnergy += 20;
-          stats.energy += 20;
-          break;
-        case 'combat_1':
-          stats.attack += 2;
-          break;
-        case 'combat_2':
-          stats.defense += 2;
-          break;
-        case 'magic_1':
-          stats.maxMana += 20;
-          stats.mana += 20;
-          break;
-        // Zbytek zatím nemá stat-based efekt (odemyká recepty/stavby jinde)
-      }
+    const intentComp = player.getComponent<IntentComponent>('IntentComponent');
+    if (intentComp) {
+      intentComp.intents.push({ type: 'unlock_skill', skillId, category, cost });
+      this.world.processIntents();
+    }
 
       await this.saveGame();
       this.onStateChange();
-    }
   }
 
   public getPlayerEntity(): Entity | undefined {

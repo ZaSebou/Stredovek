@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Calculator } from 'lucide-react';
 
 import { gameService } from '../../core/GameService';

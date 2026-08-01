@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { MainLayout } from './ui/layouts/MainLayout';
 import { MainMenu } from './ui/screens/MainMenu';
 import { HUD } from './ui/features/HUD';

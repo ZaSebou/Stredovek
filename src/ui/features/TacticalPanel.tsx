@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sword, Coins, Clock, Hammer } from 'lucide-react';
+import { Coins, Clock, Hammer } from 'lucide-react';
 
 export const TacticalPanel: React.FC = () => {
   const [turn, setTurn] = useState(1);
