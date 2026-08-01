@@ -103,6 +103,10 @@ export class GameService {
     this.onStateChange();
   }
 
+  public getTurn(): number {
+    return this.world?.currentTurn || 0;
+  }
+
   private async saveGame() {
     if (this.currentSaveId !== undefined) {
       await db.gameSaves.update(this.currentSaveId, {

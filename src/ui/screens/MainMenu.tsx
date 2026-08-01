@@ -50,7 +50,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ onStartNewGame, onContinueGa
 
           <button className="w-full flex items-center justify-center gap-3 bg-transparent hover:bg-[var(--surface-color)] text-[var(--text-secondary)] py-4 px-6 rounded border border-[var(--border-color)] transition-colors">
             <Settings size={20} />
-            Nastavení (Verze 0.5.0)
+            Nastavení (Verze 0.5.1)
           </button>
         </div>
         
