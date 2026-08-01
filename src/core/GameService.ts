@@ -240,25 +240,36 @@ export class GameService {
   public async exploreHex(q: number, r: number) {
     const player = this.getPlayerEntity();
     const map = this.getMapEntity();
-    if (!player || !map) return;
+    if (!player || !map) {
+      alert("Chyba: Nelze najít hráče nebo mapu!");
+      return;
+    }
 
     const stats = player.getComponent<StatsComponent>('StatsComponent');
     const mapComp = map.getComponent<MapComponent>('MapComponent');
     
     if (stats && mapComp) {
       if (stats.energy >= 5) {
-        stats.energy -= 5;
         const tile = mapComp.tiles.find(t => t.q === q && t.r === r);
         if (tile) {
+          stats.energy -= 5;
           tile.discovered = true;
           this.selectedHex = { q, r }; // Automaticky vybrat po prozkoumání
+          try {
+            await this.saveGame();
+            this.onStateChange();
+          } catch (e) {
+            console.error("Chyba při ukládání hry:", e);
+            alert("Chyba při ukládání hry po průzkumu.");
+          }
+        } else {
+          alert("Chyba: Zvolený hex nebyl nalezen v datech mapy.");
         }
-        await this.saveGame();
-        this.onStateChange();
       } else {
-        // TODO: Místo konzole posílat do UI logu
-        console.warn("Nedostatek energie k průzkumu!");
+        alert("Nedostatek energie k průzkumu! Potřebuješ 5 energie.");
       }
+    } else {
+      alert("Chyba: Chybí komponenty statistik nebo mapy.");
     }
   }
 
