@@ -20,13 +20,13 @@ export const MapPanel: React.FC = () => {
   const mapEntity = gameService.getMapEntity();
   const mapComp = mapEntity?.getComponent<MapComponent>('MapComponent');
   const tiles = mapComp?.tiles || [];
+  const selectedHex = gameService.selectedHex;
 
   const handleTileClick = (q: number, r: number, discovered: boolean) => {
-    // Prozkoumávání bude naší další fází
     if (!discovered) {
       gameService.exploreHex(q, r);
     } else {
-      console.log(`Zvolen prozkoumaný hex q:${q} r:${r}`);
+      gameService.selectHex(q, r);
     }
   };
 
@@ -69,8 +69,10 @@ export const MapPanel: React.FC = () => {
               
               const points = getHexCorners(cx, cy, HEX_SIZE - 1); // -1 pro mezeru mezi hexy
               
+              const isSelected = selectedHex?.q === tile.q && selectedHex?.r === tile.r;
               const fill = tile.discovered ? `var(--biome-${tile.type})` : `var(--biome-undiscovered)`;
-              const stroke = tile.discovered ? `var(--border-color)` : `#2a1a12`;
+              const stroke = isSelected ? `white` : (tile.discovered ? `var(--border-color)` : `#2a1a12`);
+              const strokeWidth = isSelected ? "3" : "1.5";
               
               return (
                 <polygon
@@ -78,8 +80,8 @@ export const MapPanel: React.FC = () => {
                   points={points}
                   fill={fill}
                   stroke={stroke}
-                  strokeWidth="1.5"
-                  className={`transition-colors duration-300 ${tile.discovered ? 'hover:brightness-125 cursor-pointer' : 'cursor-help hover:fill-[var(--surface-color)]'}`}
+                  strokeWidth={strokeWidth}
+                  className={`transition-colors duration-300 ${tile.discovered ? 'hover:brightness-125 cursor-pointer' : 'cursor-help hover:fill-[var(--surface-color)]'} ${isSelected ? 'relative z-10' : ''}`}
                   onClick={() => handleTileClick(tile.q, tile.r, tile.discovered)}
                 >
                   <title>

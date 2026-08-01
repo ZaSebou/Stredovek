@@ -22,6 +22,7 @@ export class GameService {
   private static instance: GameService;
   public world: World;
   private currentSaveId: number | undefined;
+  public selectedHex: { q: number, r: number } | null = null;
   public onStateChange: () => void = () => {};
 
   private constructor() {
@@ -250,6 +251,7 @@ export class GameService {
         const tile = mapComp.tiles.find(t => t.q === q && t.r === r);
         if (tile) {
           tile.discovered = true;
+          this.selectedHex = { q, r }; // Automaticky vybrat po prozkoumání
         }
         await this.saveGame();
         this.onStateChange();
@@ -258,6 +260,11 @@ export class GameService {
         console.warn("Nedostatek energie k průzkumu!");
       }
     }
+  }
+
+  public selectHex(q: number, r: number) {
+    this.selectedHex = { q, r };
+    this.onStateChange();
   }
 
 }
