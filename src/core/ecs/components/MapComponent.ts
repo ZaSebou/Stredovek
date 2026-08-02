@@ -8,7 +8,7 @@ export interface TileData {
   type: BiomeType;
   discovered: boolean;
   name?: string;
-  archetypeSpawn?: 'builder' | 'thief' | 'mage' | 'warrior';
+  archetypeSpawn?: 'builder' | 'thief' | 'mage' | 'warrior' | 'worker';
 }
 
 export class MapComponent extends Component {

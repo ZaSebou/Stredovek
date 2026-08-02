@@ -73,6 +73,13 @@ export const MapActionPanel: React.FC = () => {
              <span className="text-xs text-[var(--text-secondary)]">Válečník. Ohromné zdraví a útok, ale velká námaha.</span>
           </button>
         );
+      case 'worker':
+        return (
+          <button onClick={() => gameService.chooseArchetype('worker')} className="w-full bg-[var(--surface-color)] hover:bg-[var(--surface-light)] border border-stone-400 text-left px-3 py-3 rounded transition-all flex flex-col gap-1 shadow shadow-stone-900/20">
+             <div className="flex items-center justify-between"><div className="flex items-center gap-2 font-medium text-stone-300"><Pickaxe size={16} /> Nechat se najmout jako nádeník</div><span className="text-xs font-bold text-yellow-400 bg-yellow-400/10 px-2 py-1 rounded">-5 Energie</span></div>
+             <span className="text-xs text-[var(--text-secondary)]">Dělník. Nižší nároky na jídlo, vyděláváš zlato. Povolání si vybereš později.</span>
+          </button>
+        );
       default: return null;
     }
   };

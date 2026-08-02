@@ -73,7 +73,8 @@ Systém mapy reflektuje fázi a vliv hráče ve světě pomocí provázaných ú
 - Výběr při Nové hře (zatím odloženo): Vygenerování startovních podmínek je zatím pevné, později chceme výběr archetypu a místa.
 
 ### Startovní situace (Nová Hra)
-- **Archetype Selection (Organický výběr na mapě):** Výběr archetypu není jen textové okno, ale je vázán přímo na nejbližší okolní pole (hexy) na startovní mapě. Hráč klikne na pole (např. s rýčem = stavitel, s měšcem = zloděj) a tímto organickým průzkumem si vyprofiluje své *počáteční* staty (Max HP, Attack, Defense, Intellect, Mana, Agility) a odemkne první příběhovou linku. 
+- **Archetype Selection (Organický výběr na mapě):** Výběr archetypu není jen textové okno, ale je vázán přímo na okolní pole (hexy) na startovní mapě. Hráč klikne na pole (např. s rýčem = stavitel, s měšcem = zloděj) a tímto organickým průzkumem si vyprofiluje své *počáteční* staty a odemkne první příběhovou linku. 
+- **Alternativní cesta Dělníka:** K dispozici je na mapě 5. možnost – začít jako pokorný "Dělník" (nádeník). Tato volba neuzamkne hráče hned do tradičního archetypu, ale sníží nároky na údržbu (hlad) a umožní vydělávat Zlato prací. K tradičnímu RPG povolání se může propracovat později, navíc se mu tím otevírají unikátní příběhové linky (vzpoury, odboj, skryté mapy).
 - **Fluidní progrese a Specializace (WoW-style):** Počáteční volba není absolutní a hráče trvale nezamyká. Archetypy mají podkategorie a hráč se následně profiluje investicí "Skillpoints" (dovednostních bodů). Může se úzce specializovat do jedné či dvou větví (tzv. min-maxing), nebo body rovnoměrně rozprostřít a hrát jako univerzál.
 - **Suroviny:** 10 Zlatých, 1x Chleba, 10x Jablko.
 - **Předměty:** 1x Rýč (crafting: opracované dřevo + železo, ale hráč k železu zatím nemá přístup).
