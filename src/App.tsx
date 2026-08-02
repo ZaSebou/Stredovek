@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { MainLayout } from './ui/layouts/MainLayout';
 import { MainMenu } from './ui/screens/MainMenu';
+import { ArchetypeSelectionScreen } from './ui/screens/ArchetypeSelectionScreen';
 import { HUD } from './ui/features/HUD';
 import { MapPanel } from './ui/features/MapPanel';
 import { MapActionPanel } from './ui/features/MapActionPanel';
@@ -12,6 +13,7 @@ import { CraftingPanel } from './ui/features/CraftingPanel';
 import { CalculationPanel } from './ui/features/CalculationPanel';
 import { SkillTreeModal } from './ui/features/SkillTreeModal';
 import { gameService } from './core/GameService';
+import { ArchetypeComponent } from './core/ecs/components/CoreComponents';
 
 type ScreenState = 'loading' | 'menu' | 'game';
 
@@ -51,6 +53,14 @@ function App() {
       onStartNewGame={handleStartGame} 
       onContinueGame={() => setScreen('game')} 
     />;
+  }
+
+  const player = gameService.getPlayerEntity();
+  const archComp = player?.getComponent<ArchetypeComponent>('ArchetypeComponent');
+  const isArchetypeChosen = archComp?.chosen ?? true;
+
+  if (!isArchetypeChosen) {
+    return <ArchetypeSelectionScreen onSelect={(id) => gameService.chooseArchetype(id)} />;
   }
 
   return (
