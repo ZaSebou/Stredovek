@@ -10,7 +10,7 @@ Tento soubor představuje Single Source of Truth (SSOT). Nikdy neimplementujte n
 ## Problémy a Vývoj (Audit)
 
 Pokud objevíte nedořešený mechanismus nebo nejasnost, zapište ho do fronty úkolů ve složce [audit/Aktivni_Audity.md](./audit/Aktivni_Audity.md).
-Pravidla pro vedení záznamů naleznete v [audit/Pravidla_Auditu.md](./audit/Pravidla_Auditu.md).
+Pravidla pro vedení záznamů naleznete v [.gemini/rules/pravidla_auditu.md](./.gemini/rules/pravidla_auditu.md).
 
 ## Vývoj (Spuštění projektu)
 
