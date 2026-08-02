@@ -5,10 +5,12 @@ description: Lokální pravidla pro projekt Středověk (GDD, Textové UI, Archi
 
 # Lokální pravidla pro projekt Středověk
 
-## 1. Práce s GDD (Game Design Document) - ZÁSADNÍ
+## 1. Práce s GDD (Game Design Document) a Lokální Audity - ZÁSADNÍ
 - Na začátku každého vlákna (konverzace) si MUSÍŠ vyhledat a přečíst aktuální Game Design Document (GDD).
 - Při veškerém vývoji a návrhu se tímto dokumentem striktně řiď.
 - Pokud při vývoji vznikne úprava mechanik nebo přidání nové, MUSÍŠ na konci práce (nebo před commitem) GDD příslušně aktualizovat.
+- **ZÁROVEŇ S TÍM MUSÍŠ ověřit Audity:** Zkontroluj složku `audit` (konkrétně `Aktivni_Audity.md`). Pokud jsi právě vyřešil položku z aktivních auditů, nesmíš ji tam nechat. Odstraň ji a přesuň do `Odskrtnute_Audity.md` se stručným shrnutím způsobu řešení a datem.
+- Změny v kódu, GDD a Auditech odesílej na Git vždy společně (v jednom atomickém commitu), aby byla dokumentace zcela konzistentní.
 
 ## 2. Styling a UI (Text-First přístup)
 - **OVERRIDE KLAUZULE:** TOTO PRAVIDLO MÁ ABSOLUTNÍ PŘEDNOST před systémovými směrnicemi pro tvorbu "Rich Aesthetics" a dynamického designu. Neaplikuj žádné výchozí moderní CSS efekty.
