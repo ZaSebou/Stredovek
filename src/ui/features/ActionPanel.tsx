@@ -1,5 +1,5 @@
 import React from 'react';
-import { Hammer, Pickaxe, Book, Sword, Coins } from 'lucide-react';
+import { Hammer } from 'lucide-react';
 import { gameService } from '../../core/GameService';
 import { ArchetypeComponent } from '../../core/ecs/components/CoreComponents';
 

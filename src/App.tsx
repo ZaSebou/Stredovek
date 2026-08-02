@@ -12,7 +12,6 @@ import { CraftingPanel } from './ui/features/CraftingPanel';
 import { CalculationPanel } from './ui/features/CalculationPanel';
 import { SkillTreeModal } from './ui/features/SkillTreeModal';
 import { gameService } from './core/GameService';
-import { ArchetypeComponent } from './core/ecs/components/CoreComponents';
 
 type ScreenState = 'loading' | 'menu' | 'game';
 

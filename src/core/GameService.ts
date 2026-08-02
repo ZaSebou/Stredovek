@@ -76,8 +76,8 @@ export class GameService {
     player.addComponent(new MaintenanceComponent(5));
     
     // Oslabené počáteční statistiky (vyprofilují se po výběru)
-    // hp, maxHp, energy, maxEnergy, attack, defense, intellect, mana, maxMana, agility
-    player.addComponent(new StatsComponent(50, 50, 100, 100, 1, 0, 1, 0, 0, 1));
+    // hp, maxHp, energy, maxEnergy, attack, defense, intellect, mana, maxMana, agility, loyalty
+    player.addComponent(new StatsComponent(50, 50, 100, 100, 1, 0, 1, 0, 0, 1, 100));
     
     // Prázdný strom dovedností
     player.addComponent(new SkillsComponent([], { farming: 0, crafting: 0, combat: 0, magic: 0 }));
@@ -234,7 +234,7 @@ export class GameService {
     }
   }
 
-  public async chooseArchetype(archetypeId: 'builder' | 'thief' | 'mage' | 'warrior') {
+  public async chooseArchetype(archetypeId: 'builder' | 'thief' | 'mage' | 'warrior' | 'worker') {
     const player = this.getPlayerEntity();
     if (!player) return;
 

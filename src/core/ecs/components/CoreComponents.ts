@@ -74,14 +74,15 @@ export class StatsComponent extends Component {
     public intellect: number = 1,
     public mana: number = 0,
     public maxMana: number = 0,
-    public agility: number = 1
+    public agility: number = 1,
+    public loyalty: number = 100
   ) {
     super();
   }
 }
 
 export type Intent = 
-  | { type: 'choose_archetype'; archetypeId: 'builder' | 'thief' | 'mage' | 'warrior' }
+  | { type: 'choose_archetype'; archetypeId: 'builder' | 'thief' | 'mage' | 'warrior' | 'worker' }
   | { type: 'unlock_skill'; skillId: string; category: 'farming' | 'crafting' | 'combat' | 'magic'; cost: number };
 
 export class IntentComponent extends Component {

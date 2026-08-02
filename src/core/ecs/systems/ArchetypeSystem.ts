@@ -62,6 +62,17 @@ export class ArchetypeSystem extends System {
                 statsComp.energy -= 15;
                 resComp.items.push({ type: 'Rezavý meč', amount: 1 });
                 break;
+              case 'worker':
+                statsComp.hp = statsComp.maxHp = 80;
+                statsComp.energy = statsComp.maxEnergy = 60;
+                statsComp.attack = 2;
+                statsComp.defense = 1;
+                statsComp.intellect = 1;
+                statsComp.agility = 1;
+                statsComp.energy -= 5;
+                resComp.gold += 5;
+                resComp.items.push({ type: 'Rýč', amount: 1 });
+                break;
             }
           }
         }

@@ -1,5 +1,5 @@
 import { System, Entity } from '../ECS';
-import { MaintenanceComponent, ResourceComponent } from '../components/CoreComponents';
+import { MaintenanceComponent, ResourceComponent, StatsComponent } from '../components/CoreComponents';
 
 export class MaintenanceSystem extends System {
   update(entities: Entity[], currentTurn: number): void {
@@ -25,8 +25,29 @@ export class MaintenanceSystem extends System {
 
         // Pokud stále chybí energie (jídlo došlo), logujeme / penalizujeme
         if (energyNeeded > 0) {
-          console.warn(`[Tah ${currentTurn}] Entita ${entity.id} hladoví! Chybí ${energyNeeded} energie.`);
-          // TODO: Zde by proběhl odpočet loajality, HP nebo nákup za fiat.
+          const stats = entity.getComponent<StatsComponent>('StatsComponent');
+
+          // Tržní nákup chybějícího jídla (prozatímní ekonomika 1 Zlato = 1 Energie)
+          if (resources.gold > 0) {
+            const goldNeeded = energyNeeded;
+            if (resources.gold >= goldNeeded) {
+              resources.gold -= goldNeeded;
+              console.log(`[Tah ${currentTurn}] Entita ${entity.id} nakoupila jídlo z trhu za ${goldNeeded} zlata.`);
+              energyNeeded = 0;
+            } else {
+              energyNeeded -= resources.gold;
+              console.log(`[Tah ${currentTurn}] Entita ${entity.id} nakoupila částečné jídlo za ${resources.gold} zlata, ale stále chybí ${energyNeeded} energie.`);
+              resources.gold = 0;
+            }
+          }
+
+          if (energyNeeded > 0 && stats) {
+            stats.hp = Math.max(0, stats.hp - 10);
+            if (stats.loyalty !== undefined) {
+              stats.loyalty = Math.max(0, stats.loyalty - 10);
+            }
+            console.warn(`[Tah ${currentTurn}] Entita ${entity.id} hladoví! Ztráta 10 HP a 10 Loajality.`);
+          }
         }
         
         // Vyčistíme prázdné hromádky jídla
