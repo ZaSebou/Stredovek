@@ -1,32 +1,20 @@
-# React + TypeScript + Vite
+# Středověk - Webová Textová Strategie
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Tento projekt je prohlížečová textová strategická a manažerská hra zasazená do fiktivního středověkého světa. Hra využívá React 18, TypeScript, Vite a Dexie.js pro ukládání dat. Zpracování herní logiky je postaveno na Headless Engine s architekturou ECS (Entity-Component-System).
 
-Currently, two official plugins are available:
+## Architektura a Herní Pravidla (GDD)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+**Všechna zásadní rozhodnutí o herních mechanikách, pravidlech, příběhu i architektuře jsou evidována v dokumentu [MASTER_GDD.md](./MASTER_GDD.md).**
+Tento soubor představuje Single Source of Truth (SSOT). Nikdy neimplementujte novou logiku, aniž by byla nejprve schválena a zapsána do GDD.
 
-## React Compiler
+## Problémy a Vývoj (Audit)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Pokud objevíte nedořešený mechanismus nebo nejasnost, zapište ho do fronty úkolů ve složce [audit/Aktivni_Audity.md](./audit/Aktivni_Audity.md).
+Pravidla pro vedení záznamů naleznete v [audit/Pravidla_Auditu.md](./audit/Pravidla_Auditu.md).
 
-## Expanding the Oxlint configuration
+## Vývoj (Spuštění projektu)
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
+npm run dev
 ```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.

@@ -1,9 +1,14 @@
 # MASTER GDD (Game Design Document) - Středověk
 
-> **DŮLEŽITÉ PRAVIDLO (Auto-Update):** Tento dokument slouží jako Single Source of Truth (SSOT). Kdykoliv zazní nový nápad, příběhový střípek nebo úprava ekonomiky v chatu, tento dokument bude okamžitě a jako první aktualizován.
+> **DŮLEŽITÉ PRAVIDLO PRO AI AGENTY (Auto-Update & SSOT):** 
+> Tento dokument slouží jako absolutní Single Source of Truth (SSOT) pro celý projekt. 
+> - Kdykoliv zazní v chatu nový nápad, příběhový střípek nebo úprava ekonomiky, tento dokument **musí být okamžitě a jako první aktualizován**.
+> - Nikdy nedomýšlej herní mechanismy, které tu nejsou definovány.
+> - Než napíšeš jediný řádek kódu k nové mechanice nebo upravíš stávající logiku, musíš to nejdříve zapsat sem. Pokud mechanismus není vyřešen, založ úkol do složky `audit/` a ber to jako prioritu k řešení.
 
 ## 1. Hlavní vize a ekonomický model
 - **Žánr:** Prohlížečová textová hra z prostředí fiktivní středověké říše (offline, single player). 
+- **Technologický stack:** React 18, TypeScript, Vite. Stylování přes Vanilla CSS (Tailwind k dispozici, ale upřednostňováno čisté CSS/design systém). Lokální ukládání dat přes Dexie.js (IndexedDB). Architektura striktně Client-side only.
 - **Základní smyčka (Core Loop):** Od svobodného rolníka po vůdce rodu. Natažený příběh, management a dobývání.
 - **Ekonomika a Měna:** Hra využívá univerzální celosvětové platidlo. Nejedná se o simulátor s absolutně konečným množstvím peněz ve světě, ceny se mění primárně na základě reálné produkce a událostí, nikoliv lokálních mikroztrát. 
 - **Odtok zdrojů (Resource Sinks):** Suroviny a produkty neustále odtékají směrem k: nasycení armády, placení daní a poplatků, a k výstavbě (stavba vyžaduje nejen materiál, ale i "energii" - ať už vlastní, nebo nakoupenou od dělníků).
