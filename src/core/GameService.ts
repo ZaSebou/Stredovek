@@ -96,8 +96,13 @@ export class GameService {
       const r2 = Math.min(localRadius, -q + localRadius);
       for (let r = r1; r <= r2; r++) {
         let type: BiomeType = 'empty';
+        let archetypeSpawn: 'builder' | 'thief' | 'mage' | 'warrior' | undefined = undefined;
+
         if (q === 0 && r === 0) type = 'village';
-        else if (q === 1 && r === -1) type = 'nature';
+        else if (q === 1 && r === -1) { type = 'nature'; archetypeSpawn = 'builder'; }
+        else if (q === 1 && r === 0) { type = 'empty'; archetypeSpawn = 'thief'; }
+        else if (q === 0 && r === 1) { type = 'road'; archetypeSpawn = 'mage'; }
+        else if (q === -1 && r === 1) { type = 'nature'; archetypeSpawn = 'warrior'; }
         else if (q === -1 && r === 2) type = 'nature';
         else if (q === 2 && r === 0) type = 'road';
         else if (q === -2 && r === -1) type = 'water';
@@ -105,7 +110,7 @@ export class GameService {
         else if (Math.abs(q) + Math.abs(r) + Math.abs(-q-r) === localRadius * 2) type = 'nature'; // Okraje les
         
         const discovered = (q === 0 && r === 0);
-        localTiles.push({ q, r, type, discovered });
+        localTiles.push({ q, r, type, discovered, archetypeSpawn });
       }
     }
     localMapEntity.addComponent(new MapComponent(localTiles));
