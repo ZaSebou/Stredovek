@@ -8,7 +8,7 @@
 - **Ekonomika a Měna:** Hra využívá univerzální celosvětové platidlo. Nejedná se o simulátor s absolutně konečným množstvím peněz ve světě, ceny se mění primárně na základě reálné produkce a událostí, nikoliv lokálních mikroztrát. 
 - **Odtok zdrojů (Resource Sinks):** Suroviny a produkty neustále odtékají směrem k: nasycení armády, placení daní a poplatků, a k výstavbě (stavba vyžaduje nejen materiál, ale i "energii" - ať už vlastní, nebo nakoupenou od dělníků).
 - **Hierarchie Jídla:** Každé jídlo má energetickou hodnotu a je sestupně seřazeno pro potřeby. Pokud chybí "chleba" a armáda jí "jablka", klesá loajalita. Hrad navíc musí nakupovat na trhu za fiat, pokud nemá pokryto.
-- **Energie v budovách:** Zásadní rozhodnutí a čerpání energie se děje v hlavní budově (např. Chalupa).
+- **Energie v budovách:** Zásadní rozhodnutí a čerpání energie se děje v hlavní budově (např. Chalupa). Konec tahu se nespouští automaticky vyčerpáním energie, ale výhradně manuálním stiskem tlačítka "Ukončit tah" (protože ne všechny akce stojí energii).
 ## 2. Příběhové pozadí (Lore) a frakce
 - **Svět a Rasy:** Fiktivní středověká říše s čistě matematicky zpracovanou magií. 
 - **Dynastie:** Hráč buduje pokrevní linii. Hlavní nástupce přebírá kontrolu po smrti předchůdce.
@@ -18,7 +18,7 @@
 ### Headless Game Engine a UI Architektura
 - **Engine:** Pure Functions, ECS (Entity-Component-System), Global State.
 - **Roviny UI:** Hra je rozdělena na "Lokální" a "Globální" rovinu (plátno).  - *Layout (Mřížka):* 
-    - Nahoře: Interaktivní Hex mapa (přepínač lokální/globální) a vedle ní (vpravo) Globální příběhové okno. **Hex mapa rozlišuje území pouze odstínem (Biome & Territory Shading): prázdná pole, vesnice, města, cesty, přírodní úkazy, nehratelná pole, armádní budovy, vodní plochy.**
+    - Nahoře: Interaktivní Hex mapa (přepínač lokální/globální) a vedle ní (vpravo) Globální příběhové okno. **Hex mapa rozlišuje území elegantním, ale striktně bez-obrázkovým designem (CSS tvary/ikony a barvy): prázdná pole, vesnice, města, cesty, přírodní úkazy, nehratelná pole, armádní budovy, vodní plochy. Mapa je předem definovaná.**
     - Dole (zleva doprava): 1. Tabulka statistik hráče/armády, 2. Akční pole pro interakce a crafting (reagující na mapu), 3. Bitevní a tahové přepočty s logy.
 - **Evoluce UI motivu (Theme Evolution):** Barvy rozhraní odráží pokrok (raná fáze = dřevěný dark mode, pokročilá = zlatavá, end-game = nachová/purpurová).
 
@@ -33,6 +33,8 @@ Systém mapy reflektuje fázi a vliv hráče ve světě pomocí provázaných ú
 - **Rozvoj a návrat:** Hráč musí aktivně spravovat a rozvíjet každou lokaci (vesnici, město) ve své říši. Na jakýkoliv již objevený lokální bod (včetně startovního pozemku) se lze vrátit proklikem na jeho hex na globální mapě. Hráč má možnost svůj startovní pozemek povýšit historicky až na úroveň paláce.
 - **Alternativní (Skryté) lokace:** Globální mapa obsahuje body skryté před běžným zrakem (např. *Ležení, Tábor, Podzemí*). Objeví se a zpřístupní se pouze při alternativních scénářích (splnění specifického questu, rozhodnutí příběhu, vzpoura, temná stezka zloděje). Pro tyto cesty zůstává základní globální mapa stejná, ale odhalují se v ní nové vrstvy/uzly.
 - **Makro-interakce na globální mapě:** Postupem času se hráči odemknou možnosti reagovat s globální mapou (např. založení nové vsi, povýšení vesnice na město), které se dynamicky odvíjí od jeho aktuálního "statusu" a zdrojů. Některé z těchto funkcí se mohou v rané fázi v UI objevovat jako možnosti označené *"Ve vývoji"*.
+- **Plynulý přechod RPG -> Strategie (Mikro vs Makro):** Dokud je hráč fyzicky přítomen na lokální mapě (např. Farma), může provádět akce (např. pěstování obilí) ručně formou mikromanagementu. Jakmile lokaci opustí, budovy musí přejít na automatický režim. 
+- **Automatizace a Dělníci:** Automatická produkce stojí na Přiřazení dělníků (Poddaných). Pokud budova nemá dělníka, neprodukuje. Dělník každé kolo vyžaduje Údržbu (jídlo/plat). Dělníky hráč získává objevováním polí na mapě (např. první tulák žádající o práci v neprozkoumaném poli na farmě), plněním questů, nebo náborem za zlato ve vesnicích a městech.
 
 ### Pilíře
 - **Události (Hybrid Event Architecture):** Pevně psané questy (Static Narrative Graph) kombinované se systémově generovanými situacemi.
@@ -66,7 +68,7 @@ Systém mapy reflektuje fázi a vliv hráče ve světě pomocí provázaných ú
 - Výběr při Nové hře (zatím odloženo): Vygenerování startovních podmínek je zatím pevné, později chceme výběr archetypu a místa.
 
 ### Startovní situace (Nová Hra)
-- **Archetype Selection (Organický výběr):** Hráč začíná na pozemku, kde jeho první interakce s prostředím (najít rýč = stavitel, ukrást měšec = diplomat/zloděj, najít knihu = mág) trvale vyprofiluje jeho startovní staty (Max HP, Attack, Defense, Intellect, Mana, Agility) a otevře první dějové linky.
+- **Archetype Selection (Organický výběr na mapě):** Výběr archetypu není jen textové okno, ale je vázán přímo na nejbližší okolní pole (hexy) na startovní mapě. Hráč klikne na pole (např. s rýčem = stavitel, s měšcem = zloděj) a tímto organickým průzkumem si trvale vyprofiluje své startovní staty (Max HP, Attack, Defense, Intellect, Mana, Agility) a odemkne první příběhovou linku. Hráč se tak ihned naučí interakci s mapou.
 - **Suroviny:** 10 Zlatých, 1x Chleba, 10x Jablko.
 - **Předměty:** 1x Rýč (crafting: opracované dřevo + železo, ale hráč k železu zatím nemá přístup).
 - **Budovy:** 
