@@ -11,17 +11,6 @@ export const ActionPanel: React.FC<ActionPanelProps> = ({ onOpenSkillTree }) => 
   const player = gameService.getPlayerEntity();
   const archetype = player?.getComponent<ArchetypeComponent>('ArchetypeComponent');
 
-  if (archetype && !archetype.chosen) {
-    return (
-      <div className="flex flex-col h-full bg-[var(--surface-color)]/30 border-r border-[var(--border-color)] overflow-hidden p-6">
-        <div className="flex items-center gap-3 border-b border-[var(--border-color)] pb-4 mb-4">
-          <h2 className="text-xl font-medium text-[var(--text-primary)]">Počátek tvé cesty</h2>
-        </div>
-        <p className="text-sm text-[var(--text-secondary)] mb-6">Rozhlédni se po svém novém pozemku (klikni na okolní políčka na mapě). Tvá první akce na sousedním políčku určí tvůj osud.</p>
-      </div>
-    );
-  }
-
   return (
     <div className="flex flex-col h-full bg-[var(--surface-color)]/30 border-r border-[var(--border-color)] overflow-hidden p-6">
       <div className="flex items-center gap-3 border-b border-[var(--border-color)] pb-4 mb-4">

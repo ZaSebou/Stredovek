@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pickaxe, ArrowUpCircle, Eye, Navigation, PlusCircle, Coins, Book, Sword } from 'lucide-react';
+import { Pickaxe, ArrowUpCircle, Eye, Navigation, PlusCircle, Coins, Book, Sword, Hammer } from 'lucide-react';
 import { gameService } from '../../core/GameService';
 import { MapComponent } from '../../core/ecs/components/MapComponent';
 import { ArchetypeComponent } from '../../core/ecs/components/CoreComponents';
@@ -22,8 +22,6 @@ export const MapActionPanel: React.FC = () => {
   const mapComp = mapEntity?.getComponent<MapComponent>('MapComponent');
   
   const player = gameService.getPlayerEntity();
-  const archetype = player?.getComponent<ArchetypeComponent>('ArchetypeComponent');
-  const isArchetypeChosen = archetype?.chosen ?? true;
 
   let locName = 'Nevybráno';
   let coords = '';
@@ -43,41 +41,34 @@ export const MapActionPanel: React.FC = () => {
     }
   }
 
-  const renderArchetypeChoice = (archetypeId: string) => {
-    switch (archetypeId) {
-      case 'builder':
+  const renderTutorialEvent = (eventId: string) => {
+    switch (eventId) {
+      case 'farm':
         return (
-          <button onClick={() => gameService.chooseArchetype('builder')} className="w-full bg-[var(--surface-color)] hover:bg-[var(--surface-light)] border border-orange-400 text-left px-3 py-3 rounded transition-all flex flex-col gap-1 shadow shadow-orange-900/20">
-             <div className="flex items-center justify-between"><div className="flex items-center gap-2 font-medium text-orange-300"><Pickaxe size={16} /> Sebrat starý rýč</div><span className="text-xs font-bold text-yellow-400 bg-yellow-400/10 px-2 py-1 rounded">-5 Energie</span></div>
-             <span className="text-xs text-[var(--text-secondary)]">Stavitel a zemědělec. Vysoké HP a energie.</span>
+          <button className="w-full bg-[var(--surface-color)] hover:bg-[var(--surface-light)] border border-green-400 text-left px-3 py-3 rounded transition-all flex flex-col gap-1 shadow shadow-green-900/20">
+             <div className="flex items-center justify-between"><div className="flex items-center gap-2 font-medium text-green-300"><Pickaxe size={16} /> Zkusit okopat zaplevelený záhon</div><span className="text-xs font-bold text-yellow-400 bg-yellow-400/10 px-2 py-1 rounded">Úkol</span></div>
+             <span className="text-xs text-[var(--text-secondary)]">Získáš první XP a SP pro Zemědělství. (Ve vývoji)</span>
           </button>
         );
-      case 'thief':
+      case 'craft':
         return (
-          <button onClick={() => gameService.chooseArchetype('thief')} className="w-full bg-[var(--surface-color)] hover:bg-[var(--surface-light)] border border-yellow-400 text-left px-3 py-3 rounded transition-all flex flex-col gap-1 shadow shadow-yellow-900/20">
-             <div className="flex items-center justify-between"><div className="flex items-center gap-2 font-medium text-yellow-300"><Coins size={16} /> Ukrást pohozený měšec</div><span className="text-xs font-bold text-yellow-400 bg-yellow-400/10 px-2 py-1 rounded">-5 Energie</span></div>
-             <span className="text-xs text-[var(--text-secondary)]">Zloděj a diplomat. Získáš 50 Zlatých a skrytou dýku.</span>
+          <button className="w-full bg-[var(--surface-color)] hover:bg-[var(--surface-light)] border border-orange-400 text-left px-3 py-3 rounded transition-all flex flex-col gap-1 shadow shadow-orange-900/20">
+             <div className="flex items-center justify-between"><div className="flex items-center gap-2 font-medium text-orange-300"><Hammer size={16} /> Zkusit opravit starý plot</div><span className="text-xs font-bold text-yellow-400 bg-yellow-400/10 px-2 py-1 rounded">Úkol</span></div>
+             <span className="text-xs text-[var(--text-secondary)]">Získáš první XP a SP pro Řemeslo. (Ve vývoji)</span>
           </button>
         );
-      case 'mage':
+      case 'combat':
         return (
-          <button onClick={() => gameService.chooseArchetype('mage')} className="w-full bg-[var(--surface-color)] hover:bg-[var(--surface-light)] border border-purple-400 text-left px-3 py-3 rounded transition-all flex flex-col gap-1 shadow shadow-purple-900/20">
-             <div className="flex items-center justify-between"><div className="flex items-center gap-2 font-medium text-purple-300"><Book size={16} /> Oprášit cizí knihu</div><span className="text-xs font-bold text-yellow-400 bg-yellow-400/10 px-2 py-1 rounded">-10 Energie</span></div>
-             <span className="text-xs text-[var(--text-secondary)]">Mág. Odemkne 40 Many a získáš magickou knihu.</span>
+          <button className="w-full bg-[var(--surface-color)] hover:bg-[var(--surface-light)] border border-red-400 text-left px-3 py-3 rounded transition-all flex flex-col gap-1 shadow shadow-red-900/20">
+             <div className="flex items-center justify-between"><div className="flex items-center gap-2 font-medium text-red-300"><Sword size={16} /> Odehnat divokou zvěř</div><span className="text-xs font-bold text-yellow-400 bg-yellow-400/10 px-2 py-1 rounded">Úkol</span></div>
+             <span className="text-xs text-[var(--text-secondary)]">Získáš první XP a SP pro Boj. (Ve vývoji)</span>
           </button>
         );
-      case 'warrior':
+      case 'explore':
         return (
-          <button onClick={() => gameService.chooseArchetype('warrior')} className="w-full bg-[var(--surface-color)] hover:bg-[var(--surface-light)] border border-red-400 text-left px-3 py-3 rounded transition-all flex flex-col gap-1 shadow shadow-red-900/20">
-             <div className="flex items-center justify-between"><div className="flex items-center gap-2 font-medium text-red-300"><Sword size={16} /> Vytáhnout rezavý meč</div><span className="text-xs font-bold text-yellow-400 bg-yellow-400/10 px-2 py-1 rounded">-15 Energie</span></div>
-             <span className="text-xs text-[var(--text-secondary)]">Válečník. Ohromné zdraví a útok, ale velká námaha.</span>
-          </button>
-        );
-      case 'worker':
-        return (
-          <button onClick={() => gameService.chooseArchetype('worker')} className="w-full bg-[var(--surface-color)] hover:bg-[var(--surface-light)] border border-stone-400 text-left px-3 py-3 rounded transition-all flex flex-col gap-1 shadow shadow-stone-900/20">
-             <div className="flex items-center justify-between"><div className="flex items-center gap-2 font-medium text-stone-300"><Pickaxe size={16} /> Nechat se najmout jako nádeník</div><span className="text-xs font-bold text-yellow-400 bg-yellow-400/10 px-2 py-1 rounded">-5 Energie</span></div>
-             <span className="text-xs text-[var(--text-secondary)]">Dělník. Nižší nároky na jídlo, vyděláváš zlato. Povolání si vybereš později.</span>
+          <button className="w-full bg-[var(--surface-color)] hover:bg-[var(--surface-light)] border border-blue-400 text-left px-3 py-3 rounded transition-all flex flex-col gap-1 shadow shadow-blue-900/20">
+             <div className="flex items-center justify-between"><div className="flex items-center gap-2 font-medium text-blue-300"><Eye size={16} /> Prozkoumat opuštěný vůz</div><span className="text-xs font-bold text-yellow-400 bg-yellow-400/10 px-2 py-1 rounded">Úkol</span></div>
+             <span className="text-xs text-[var(--text-secondary)]">Získáš první obecné XP a zlaťáky. (Ve vývoji)</span>
           </button>
         );
       default: return null;
@@ -93,13 +84,7 @@ export const MapActionPanel: React.FC = () => {
       
       {selectedHex ? (
         <div className="flex flex-col gap-2">
-          {!isArchetypeChosen ? (
-            currentTile?.archetypeSpawn ? (
-              renderArchetypeChoice(currentTile.archetypeSpawn)
-            ) : (
-              <p className="text-sm text-[var(--text-secondary)] italic">Tady není nic zajímavého. Zkus prozkoumat jiné políčko sousedící s tvou chalupou.</p>
-            )
-          ) : !isDiscovered ? (
+          {!isDiscovered ? (
             <button 
               onClick={() => gameService.exploreHex(selectedHex.q, selectedHex.r)}
               className="w-full bg-[var(--surface-color)] hover:bg-[var(--surface-light)] border border-[var(--color-wood-300)] text-left px-3 py-2 rounded transition-colors text-[var(--color-wood-300)] flex items-center gap-3 text-sm shadow-[0_0_10px_rgba(192,132,97,0.1)]"
@@ -109,6 +94,7 @@ export const MapActionPanel: React.FC = () => {
             </button>
           ) : (
             <>
+              {currentTile?.tutorialEvent && renderTutorialEvent(currentTile.tutorialEvent)}
               {gameService.activeMapMode === 'global' ? (
                 <>
                   <button 

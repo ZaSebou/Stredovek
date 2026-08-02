@@ -72,10 +72,11 @@ Systém mapy reflektuje fázi a vliv hráče ve světě pomocí provázaných ú
 - Rozdělení mapy na kontinenty nebo "ostatní říše" v endgame fázi hry.
 - Výběr při Nové hře (zatím odloženo): Vygenerování startovních podmínek je zatím pevné, později chceme výběr archetypu a místa.
 
-### Startovní situace (Nová Hra)
-- **Archetype Selection (Organický výběr na mapě):** Výběr archetypu není jen textové okno, ale je vázán přímo na okolní pole (hexy) na startovní mapě. Hráč klikne na pole (např. s rýčem = stavitel, s měšcem = zloděj) a tímto organickým průzkumem si vyprofiluje své *počáteční* staty a odemkne první příběhovou linku. 
-- **Alternativní cesta Dělníka:** K dispozici je na mapě 5. možnost – začít jako pokorný "Dělník" (nádeník). Tato volba neuzamkne hráče hned do tradičního archetypu, ale sníží nároky na údržbu (hlad) a umožní vydělávat Zlato prací. K tradičnímu RPG povolání se může propracovat později, navíc se mu tím otevírají unikátní příběhové linky (vzpoury, odboj, skryté mapy).
-- **Fluidní progrese a Specializace (WoW-style):** Počáteční volba není absolutní a hráče trvale nezamyká. Archetypy mají podkategorie a hráč se následně profiluje investicí "Skillpoints" (dovednostních bodů). Může se úzce specializovat do jedné či dvou větví (tzv. min-maxing), nebo body rovnoměrně rozprostřít a hrát jako univerzál.
+### Startovní situace (Nová Hra a Progrese)
+- **Začátek bez zaměření (Vesničan):** Hráč začíná vždy jako "Vesničan" (classless). Výběr archetypu neprobíhá hned na začátku hry. Okolní pole (hexy) na startovní mapě ovšem obsahují první příběhové události a tutoriálové úkoly, přes které získá první zkušenosti (XP) a Dovednostní body (SP).
+- **Strom dovedností a Zkušenosti:** Hráč získává XP pro rozvoj postavy a jejího vlivu. Z činností získávané Dovednostní body (SP) nejprve investuje do "lineárního kmenu" (základy farmaření, přežití). 
+- **Volba Archetypu a Štěpení:** Po dokončení základní části stromu se hráč rozhodne pro svůj hlavní Archetyp (Farmář, Řemeslník, Mág, Bojovník, nebo alternativně skrytý Vyvrhel). Tato volba upraví jeho základní staty a rozštěpí strom dovedností na paralelní větve.
+- **Zisk bodů z praxe a min-maxing:** I po zvolení archetypu může hráč získávat SP z praxe a investovat do ostatních větví. Zisk těchto bodů je ale úměrně upraven jeho zaměřením, aby ho to nenutilo body utrácet rovnoměrně, ale musel zvažovat priority (např. Farmář potřebuje víc jídla, tak se věnuje poli a pomaleji sbírá SP pro zlodějské větve). Později se větve štěpí na pod-zaměření (kladné/záporné WoW-style).
 - **Suroviny:** 10 Zlatých, 1x Chleba, 10x Jablko.
 - **Předměty:** 1x Rýč (crafting: opracované dřevo + železo, ale hráč k železu zatím nemá přístup).
 - **Budovy:** 
