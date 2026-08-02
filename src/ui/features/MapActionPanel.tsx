@@ -1,8 +1,8 @@
 import React from 'react';
-import { Pickaxe, ArrowUpCircle, Eye, Navigation, PlusCircle, Coins, Book, Sword, Hammer } from 'lucide-react';
+import { Pickaxe, ArrowUpCircle, Eye, Navigation, PlusCircle, Sword, Hammer } from 'lucide-react';
 import { gameService } from '../../core/GameService';
 import { MapComponent } from '../../core/ecs/components/MapComponent';
-import { ArchetypeComponent } from '../../core/ecs/components/CoreComponents';
+
 
 // Pomocná mapa názvů
 const BiomeNames: Record<string, string> = {
@@ -21,7 +21,7 @@ export const MapActionPanel: React.FC = () => {
   const mapEntity = gameService.getMapEntity();
   const mapComp = mapEntity?.getComponent<MapComponent>('MapComponent');
   
-  const player = gameService.getPlayerEntity();
+
 
   let locName = 'Nevybráno';
   let coords = '';

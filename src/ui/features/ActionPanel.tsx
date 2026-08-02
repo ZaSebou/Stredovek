@@ -1,15 +1,13 @@
 import React from 'react';
 import { Hammer } from 'lucide-react';
-import { gameService } from '../../core/GameService';
-import { ArchetypeComponent } from '../../core/ecs/components/CoreComponents';
+
+
 
 interface ActionPanelProps {
   onOpenSkillTree?: () => void;
 }
 
 export const ActionPanel: React.FC<ActionPanelProps> = ({ onOpenSkillTree }) => {
-  const player = gameService.getPlayerEntity();
-  const archetype = player?.getComponent<ArchetypeComponent>('ArchetypeComponent');
 
   return (
     <div className="flex flex-col h-full bg-[var(--surface-color)]/30 border-r border-[var(--border-color)] overflow-hidden p-6">
