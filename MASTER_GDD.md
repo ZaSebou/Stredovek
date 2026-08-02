@@ -49,7 +49,7 @@ Systém mapy reflektuje fázi a vliv hráče ve světě pomocí provázaných ú
 - **Logistika a Zásoby:** Sklady jsou lokální. Přesun řešen přes propojky grafu. Pohyb karavan probíhá vzdušnou čarou bez řešení fyzických státních hranic (stačí aby města sousedila např. přes prázdná pole).
 - **Makroekonomika a Daně:** Hráč odvádí daně ve Zlatě, dokud nepřevezme přímou správu uzlů. Pokud království a armáda nemají pokryté potřeby z lokální produkce, musí nakupovat za "tržní ceny", což vysává globální pokladnici a startuje *Spirálu úpadku* (nedostatek peněz -> vyšší daně -> chudnutí lokací -> menší produkce -> vyšší ceny).
 - **Čas a Kalendář:** Hra stojí na konceptech tahů představujících čas. Roční období (zima vs. léto) reálně modifikují produkci, logistiku a bojeschopnost.
-- **Loajalita a Údržba (Maintenance):** Každý poddaný, pracovník i voják vyžaduje pravidelné uspokojování potřeb (hlad, nástroje, výzbroj).
+- **Loajalita a Údržba (Maintenance):** Každý poddaný, pracovník i voják vyžaduje pravidelné uspokojování potřeb (hlad, nástroje, výzbroj). Pokud na konci tahu chybí energie/jídlo, automaticky se dokoupí chybějící suroviny za Zlato (prozatímní ekonomika 1 zlato = 1 energie). Pokud dojde i Zlato, nastává hladovění, při kterém entita ztrácí každým tahem -10 HP a -10 Loajality.
 - **Krizové stavy a Prohra (Game Over):** Samotná prohra v bitvě nekončí hru, vede pouze ke ztrátě surovin, penalizacím a vzpourám. "Game Over" nastává výhradně tehdy, pokud dojde ke smrti vůdce bez zajištěného dědice.
 - **Magie:** Legitimní síla ve světě, státy mají dominantní a podružné magické zaměření. Její vliv se ale počítá striktně přes datové koeficienty a staty hrdiny, bez nutnosti grafických animací.
 
